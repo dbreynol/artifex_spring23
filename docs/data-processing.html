@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 1 Data Processing | Artifex - Fall 2022</title>
+  <meta name="description" content="(Partial) course materials for Artifex, Fall 2022." />
+  <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 1 Data Processing | Artifex - Fall 2022" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="(Partial) course materials for Artifex, Fall 2022." />
+  <meta name="github-repo" content="openscapes/series" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 1 Data Processing | Artifex - Fall 2022" />
+  
+  <meta name="twitter:description" content="(Partial) course materials for Artifex, Fall 2022." />
+  
+
+<meta name="author" content="David Reynolds" />
+
+
+<meta name="date" content="2022-11-29" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="data-manipulation.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="lib/css/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" href="lib/css/style.css" type="text/css" />
+<link rel="stylesheet" href="lib/css/lesson.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Artifex Fall 2022</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Course Overview - Artifex Fall 2022</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#prerequisites-and-preparations"><i class="fa fa-check"></i>Prerequisites and Preparations</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#references"><i class="fa fa-check"></i>References</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="data-processing.html"><a href="data-processing.html"><i class="fa fa-check"></i><b>1</b> Data Processing</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="data-processing.html"><a href="data-processing.html#cleaning-up-strings"><i class="fa fa-check"></i><b>1.1</b> Cleaning up strings</a></li>
+<li class="chapter" data-level="1.2" data-path="data-processing.html"><a href="data-processing.html#assignment-1"><i class="fa fa-check"></i><b>1.2</b> Assignment 1</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="data-manipulation.html"><a href="data-manipulation.html"><i class="fa fa-check"></i><b>2</b> Data Manipulation</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="data-manipulation.html"><a href="data-manipulation.html#filter"><i class="fa fa-check"></i><b>2.1</b> Filter</a></li>
+<li class="chapter" data-level="2.2" data-path="data-manipulation.html"><a href="data-manipulation.html#arrange"><i class="fa fa-check"></i><b>2.2</b> Arrange</a></li>
+<li class="chapter" data-level="2.3" data-path="data-manipulation.html"><a href="data-manipulation.html#select"><i class="fa fa-check"></i><b>2.3</b> Select</a></li>
+<li class="chapter" data-level="2.4" data-path="data-manipulation.html"><a href="data-manipulation.html#mutate"><i class="fa fa-check"></i><b>2.4</b> Mutate</a></li>
+<li class="chapter" data-level="2.5" data-path="data-manipulation.html"><a href="data-manipulation.html#group-by-summarise"><i class="fa fa-check"></i><b>2.5</b> Group-By/ Summarise</a></li>
+<li class="chapter" data-level="2.6" data-path="data-manipulation.html"><a href="data-manipulation.html#assignment-2"><i class="fa fa-check"></i><b>2.6</b> Assignment 2</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="time-series.html"><a href="time-series.html"><i class="fa fa-check"></i><b>3</b> Time Series</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="time-series.html"><a href="time-series.html#decomposition"><i class="fa fa-check"></i><b>3.1</b> Decomposition</a></li>
+<li class="chapter" data-level="3.2" data-path="time-series.html"><a href="time-series.html#forecasting"><i class="fa fa-check"></i><b>3.2</b> Forecasting</a></li>
+<li class="chapter" data-level="3.3" data-path="time-series.html"><a href="time-series.html#statistical-model"><i class="fa fa-check"></i><b>3.3</b> Statistical model</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Artifex - Fall 2022</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="data-processing" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">Chapter 1</span> Data Processing<a href="data-processing.html#data-processing" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>To motivate this section on data processing, we will use the (fictional) data below that contains order information for a retail company. As is almost always the case, this data needs some pre-processing before it is in shape for exploration and analysis. Copy and paste the code below to obtain this data frame in your environment. The processing steps we carry out below rely on the <code>lubridate</code> package, so start your script with <code>library(lubridate)</code>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="data-processing.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb1-2"><a href="data-processing.html#cb1-2" aria-hidden="true" tabindex="-1"></a>customer <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;113 - Shaws&quot;</span>, <span class="st">&quot;217 - Shaws&quot;</span>, <span class="st">&quot;2114 - WalMart&quot;</span>, <span class="st">&quot;99 - WalMart&quot;</span>,</span>
+<span id="cb1-3"><a href="data-processing.html#cb1-3" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;23 - CVS&quot;</span>, <span class="st">&quot;09 - CVS&quot;</span>) <span class="co"># numbers dash name</span></span>
+<span id="cb1-4"><a href="data-processing.html#cb1-4" aria-hidden="true" tabindex="-1"></a>product <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;WX1X - 9 gal - Jelly&quot;</span>, <span class="st">&quot;WX1P - 4 gal - Jelly&quot;</span>,</span>
+<span id="cb1-5"><a href="data-processing.html#cb1-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;QP1X - 11 gal - Grape Juice&quot;</span>, <span class="st">&quot;QP1 - 7 gal - Fruit Juice&quot;</span>,</span>
+<span id="cb1-6"><a href="data-processing.html#cb1-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;TYL - 1 gal - Peanut Butter&quot;</span>, <span class="st">&quot;LL - 2 gal - Jam&quot;</span>) <span class="co"># letters size description</span></span>
+<span id="cb1-7"><a href="data-processing.html#cb1-7" aria-hidden="true" tabindex="-1"></a>business_unit <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;123 Retail&quot;</span>, <span class="st">&quot;437 Consumer&quot;</span>,</span>
+<span id="cb1-8"><a href="data-processing.html#cb1-8" aria-hidden="true" tabindex="-1"></a>                  <span class="st">&quot;990 International&quot;</span>, <span class="st">&quot;222 Retail&quot;</span>,</span>
+<span id="cb1-9"><a href="data-processing.html#cb1-9" aria-hidden="true" tabindex="-1"></a>                  <span class="st">&quot;49 Consumer&quot;</span>, <span class="st">&quot;09 International&quot;</span>) <span class="co"># number dash name</span></span>
+<span id="cb1-10"><a href="data-processing.html#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="data-processing.html#cb1-11" aria-hidden="true" tabindex="-1"></a>df <span class="ot">=</span> <span class="fu">data.frame</span>(customer, product, business_unit, </span>
+<span id="cb1-12"><a href="data-processing.html#cb1-12" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;1-1-2022&quot;</span> <span class="ot">=</span> <span class="fu">rpois</span>(<span class="dv">6</span>, <span class="dv">1100</span>),</span>
+<span id="cb1-13"><a href="data-processing.html#cb1-13" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;2-1-2022&quot;</span> <span class="ot">=</span> <span class="fu">rpois</span>(<span class="dv">6</span>, <span class="dv">1200</span>),</span>
+<span id="cb1-14"><a href="data-processing.html#cb1-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">check.names =</span> F)</span></code></pre></div>
+<table>
+<caption><span id="tab:unnamed-chunk-3">Table 1.1: </span>A fake dataset on product shipments.</caption>
+<colgroup>
+<col width="18%" />
+<col width="35%" />
+<col width="22%" />
+<col width="11%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">customer</th>
+<th align="left">product</th>
+<th align="left">business_unit</th>
+<th align="right">1-1-2022</th>
+<th align="right">2-1-2022</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">113 - Shaws</td>
+<td align="left">WX1X - 9 gal - Jelly</td>
+<td align="left">123 Retail</td>
+<td align="right">1079</td>
+<td align="right">1225</td>
+</tr>
+<tr class="even">
+<td align="left">217 - Shaws</td>
+<td align="left">WX1P - 4 gal - Jelly</td>
+<td align="left">437 Consumer</td>
+<td align="right">1144</td>
+<td align="right">1219</td>
+</tr>
+<tr class="odd">
+<td align="left">2114 - WalMart</td>
+<td align="left">QP1X - 11 gal - Grape Juice</td>
+<td align="left">990 International</td>
+<td align="right">1142</td>
+<td align="right">1189</td>
+</tr>
+<tr class="even">
+<td align="left">99 - WalMart</td>
+<td align="left">QP1 - 7 gal - Fruit Juice</td>
+<td align="left">222 Retail</td>
+<td align="right">1113</td>
+<td align="right">1172</td>
+</tr>
+<tr class="odd">
+<td align="left">23 - CVS</td>
+<td align="left">TYL - 1 gal - Peanut Butter</td>
+<td align="left">49 Consumer</td>
+<td align="right">1048</td>
+<td align="right">1178</td>
+</tr>
+<tr class="even">
+<td align="left">09 - CVS</td>
+<td align="left">LL - 2 gal - Jam</td>
+<td align="left">09 International</td>
+<td align="right">1116</td>
+<td align="right">1189</td>
+</tr>
+</tbody>
+</table>
+<p>Our pre-processing of this particular dataset consists primarily of cleaning up the character (string) variables and dealing with dates.</p>
+<div id="cleaning-up-strings" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> Cleaning up strings<a href="data-processing.html#cleaning-up-strings" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>For a reference on the use of strings in R, see this <a href="https://r4ds.had.co.nz/strings.html#strings">excellent resource</a>.</p>
+<p>For the purpose of our analysis, some aspects of this dataset that are distracting for analysis include:</p>
+<ol style="list-style-type: decimal">
+<li>The meaningless (to us) numbers that precede the customer name and business unit.</li>
+<li>The meaningless letters that precede the product description.</li>
+<li>The product variable includes the size which would ideally exist in its own column (i.e., we want a size column whose first entry is 9)</li>
+</ol>
+<p>Let’s work through each of these using the functions <code>str_sub</code>, <code>str_locate</code>, and <code>str_split</code>. Let’s first go over what these functions do and how they can be used for this task.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="data-processing.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_sub</span>(<span class="st">&quot;The big short&quot;</span>, <span class="at">start =</span> <span class="dv">5</span>, <span class="at">end =</span> <span class="dv">7</span>) <span class="co"># big</span></span>
+<span id="cb2-2"><a href="data-processing.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># the input can also be a vector</span></span>
+<span id="cb2-3"><a href="data-processing.html#cb2-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Apple&quot;</span>, <span class="st">&quot;Banana&quot;</span>, <span class="st">&quot;Pear&quot;</span>) <span class="co"># character vector</span></span>
+<span id="cb2-4"><a href="data-processing.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str_sub</span>(x, <span class="dv">1</span>, <span class="dv">3</span>) <span class="co"># &quot;App&quot; &quot;Ban&quot; &quot;Pea&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="data-processing.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_locate</span>(<span class="st">&quot;This&quot;</span>, <span class="st">&quot;s&quot;</span>) <span class="co"># gives the starting and ending position of the &#39;s&#39; in &#39;This&#39;</span></span></code></pre></div>
+<p><strong>How can these two functions</strong> (<code>str_sub</code>, <code>str_locate</code>) <strong>be used in conjunction to deal with the first issue identified above? Try this out using the first entry from customer.</strong></p>
+<p>The patterns that are located can be much more general than a literal letter. These patters are known as regular expressions. For example, suppose we would like to locate the part of the string that consists of the letter a followed by any number. The regular expression that represents any digit is <code>\d</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="data-processing.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_locate</span>(<span class="st">&quot;aardvark a3&quot;</span>, <span class="st">&quot;a</span><span class="sc">\\</span><span class="st">d&quot;</span>) <span class="co"># 10 11</span></span></code></pre></div>
+<p>For more on matching regular expressions in R, <a href="https://r4ds.had.co.nz/strings.html#matching-patterns-with-regular-expressions">see this document on the topic</a>.</p>
+<p>Next, let’s deal with the product variable. This variable contains two potentially useful pieces of information and one useless piece. They are separated by a dash. This presents a good use case for the <code>str_split</code> function. Here is an example where we have two data points that are separated by a colon and we would like to extract them.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="data-processing.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_split</span>(<span class="st">&quot;200:300&quot;</span>, <span class="st">&quot;:&quot;</span>, <span class="at">simplify =</span> T) <span class="co"># 200 300</span></span></code></pre></div>
+<p><strong>What should we split the product variable on?</strong></p>
+<p>This will give us a matrix, with two useful columns. We want to grab these columns and include them in our data frame as <code>size</code> and <code>product_name</code>. <a href="http://htmlpreview.github.io/?https://github.com/andrewpbray/oiLabs-base-R/blob/master/intro_to_data/intro_to_data.html">Refresher on how to carry out these sorts of tasks - How R thinks about data.</a></p>
+</div>
+<div id="assignment-1" class="section level2 hasAnchor" number="1.2">
+<h2><span class="header-section-number">1.2</span> Assignment 1<a href="data-processing.html#assignment-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li>Use the functions described above (<code>str_sub</code>, <code>str_locate</code>, and <code>str_split</code>) to obtain the following cleaned up data frame.</li>
+</ol>
+<table>
+<thead>
+<tr class="header">
+<th align="left">customer</th>
+<th align="left">product</th>
+<th align="left">business_unit</th>
+<th align="right">1-1-2022</th>
+<th align="right">2-1-2022</th>
+<th align="left">size</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Shaws</td>
+<td align="left">Jelly</td>
+<td align="left">Retail</td>
+<td align="right">1079</td>
+<td align="right">1225</td>
+<td align="left">9 gal</td>
+</tr>
+<tr class="even">
+<td align="left">Shaws</td>
+<td align="left">Jelly</td>
+<td align="left">Consumer</td>
+<td align="right">1144</td>
+<td align="right">1219</td>
+<td align="left">4 gal</td>
+</tr>
+<tr class="odd">
+<td align="left">WalMart</td>
+<td align="left">Grape Juice</td>
+<td align="left">International</td>
+<td align="right">1142</td>
+<td align="right">1189</td>
+<td align="left">11 gal</td>
+</tr>
+<tr class="even">
+<td align="left">WalMart</td>
+<td align="left">Fruit Juice</td>
+<td align="left">Retail</td>
+<td align="right">1113</td>
+<td align="right">1172</td>
+<td align="left">7 gal</td>
+</tr>
+<tr class="odd">
+<td align="left">CVS</td>
+<td align="left">Peanut Butter</td>
+<td align="left">Consumer</td>
+<td align="right">1048</td>
+<td align="right">1178</td>
+<td align="left">1 gal</td>
+</tr>
+<tr class="even">
+<td align="left">CVS</td>
+<td align="left">Jam</td>
+<td align="left">International</td>
+<td align="right">1116</td>
+<td align="right">1189</td>
+<td align="left">2 gal</td>
+</tr>
+</tbody>
+</table>
+<ol start="2" style="list-style-type: decimal">
+<li><strong>Dealing with dates (part 1)</strong>. The output from part one gets us pretty close to our desired analytic dataset. However, it turns out that for our analysis we would like the data to be in <em>long</em> format, where each row contains information on a single month. So, the first row of the dataset would have the January 2022 units of 9 gal Jelly shipped to Shaw’s. This is achieved using the function <code>pivot_longer</code>. <a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">Let’s take a look at the example from the documentation</a> to figure out what parameters to use to achieve this</li>
+</ol>
+<p>Once you figure out the appropriate arguments for <code>pivot_longer</code>, the <code>head</code> of your new data frame should look like this:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">customer</th>
+<th align="left">product</th>
+<th align="left">business_unit</th>
+<th align="left">size</th>
+<th align="left">month</th>
+<th align="right">units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Shaws</td>
+<td align="left">Jelly</td>
+<td align="left">Retail</td>
+<td align="left">9 gal</td>
+<td align="left">1-1-2022</td>
+<td align="right">1079</td>
+</tr>
+<tr class="even">
+<td align="left">Shaws</td>
+<td align="left">Jelly</td>
+<td align="left">Retail</td>
+<td align="left">9 gal</td>
+<td align="left">2-1-2022</td>
+<td align="right">1225</td>
+</tr>
+<tr class="odd">
+<td align="left">Shaws</td>
+<td align="left">Jelly</td>
+<td align="left">Consumer</td>
+<td align="left">4 gal</td>
+<td align="left">1-1-2022</td>
+<td align="right">1144</td>
+</tr>
+<tr class="even">
+<td align="left">Shaws</td>
+<td align="left">Jelly</td>
+<td align="left">Consumer</td>
+<td align="left">4 gal</td>
+<td align="left">2-1-2022</td>
+<td align="right">1219</td>
+</tr>
+<tr class="odd">
+<td align="left">WalMart</td>
+<td align="left">Grape Juice</td>
+<td align="left">International</td>
+<td align="left">11 gal</td>
+<td align="left">1-1-2022</td>
+<td align="right">1142</td>
+</tr>
+<tr class="even">
+<td align="left">WalMart</td>
+<td align="left">Grape Juice</td>
+<td align="left">International</td>
+<td align="left">11 gal</td>
+<td align="left">2-1-2022</td>
+<td align="right">1189</td>
+</tr>
+</tbody>
+</table>
+<ol start="3" style="list-style-type: decimal">
+<li><strong>Dealing with dates (part 2)</strong>. Finally, we want R to recognize our <code>month</code> variable as a date (rather than a character). A helpful package for dates is <code>lubridate</code>. Download and load this package into your workspace and use the function <code>mdy</code> on the <code>month</code> variable to coerce this variable to become a date. The <code>str</code> of your data frame should now look like this:</li>
+</ol>
+<pre><code>## tibble [12 × 6] (S3: tbl_df/tbl/data.frame)
+##  $ customer     : chr [1:12] &quot;Shaws&quot; &quot;Shaws&quot; &quot;Shaws&quot; &quot;Shaws&quot; ...
+##  $ product      : chr [1:12] &quot;Jelly&quot; &quot;Jelly&quot; &quot;Jelly&quot; &quot;Jelly&quot; ...
+##  $ business_unit: chr [1:12] &quot;Retail&quot; &quot;Retail&quot; &quot;Consumer&quot; &quot;Consumer&quot; ...
+##  $ size         : chr [1:12] &quot;9 gal&quot; &quot;9 gal&quot; &quot;4 gal&quot; &quot;4 gal&quot; ...
+##  $ month        : Date[1:12], format: &quot;2022-01-01&quot; &quot;2022-02-01&quot; ...
+##  $ units        : int [1:12] 1079 1225 1144 1219 1142 1189 1113 1172 1048 1178 ...</code></pre>
+<p>Notice how the month variable has format <em>Date</em>. Your data frame is now ready for exploration and analysis!</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="data-manipulation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/dbreynol/artifex_fall2022/edit/master/processing.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["series.pdf"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

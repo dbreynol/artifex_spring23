@@ -1,0 +1,106 @@
+# Data Processing
+
+To motivate this section on data processing, we will use the (fictional) data below that contains order information for a retail company. As is almost always the case, this data needs some pre-processing before it is in shape for exploration and analysis. Copy and paste the code below to obtain this data frame in your environment. The processing steps we carry out below rely on the <code>lubridate</code> package, so start your script with <code>library(lubridate)</code>.
+
+```{r echo=TRUE}
+set.seed(1)
+customer = c("113 - Shaws", "217 - Shaws", "2114 - WalMart", "99 - WalMart",
+             "23 - CVS", "09 - CVS") # numbers dash name
+product = c("WX1X - 9 gal - Jelly", "WX1P - 4 gal - Jelly",
+            "QP1X - 11 gal - Grape Juice", "QP1 - 7 gal - Fruit Juice",
+            "TYL - 1 gal - Peanut Butter", "LL - 2 gal - Jam") # letters size description
+business_unit = c("123 Retail", "437 Consumer",
+                  "990 International", "222 Retail",
+                  "49 Consumer", "09 International") # number dash name
+
+df = data.frame(customer, product, business_unit, 
+                "1-1-2022" = rpois(6, 1100),
+                "2-1-2022" = rpois(6, 1200),
+                check.names = F)
+```
+
+```{r}
+kable(head(df),
+      caption = 'A fake dataset on product shipments.')
+```
+
+Our pre-processing of this particular dataset consists primarily of cleaning up the character (string) variables and dealing with dates.  
+
+## Cleaning up strings
+
+For a reference on the use of strings in R, see this [excellent resource](https://r4ds.had.co.nz/strings.html#strings).
+
+For the purpose of our analysis, some aspects of this dataset that are distracting for analysis include:
+
+1. The meaningless (to us) numbers that precede the customer name and business unit. 
+2. The meaningless letters that precede the product description.
+3. The product variable includes the size which would ideally exist in its own column (i.e., we want a size column whose first entry is 9)
+
+Let's work through each of these using the functions <code>str_sub</code>, <code>str_locate</code>, and <code>str_split</code>. Let's first go over what these functions do and how they can be used for this task.
+
+```{r echo=TRUE, eval=FALSE}
+str_sub("The big short", start = 5, end = 7) # big
+# the input can also be a vector
+x <- c("Apple", "Banana", "Pear") # character vector
+str_sub(x, 1, 3) # "App" "Ban" "Pea"
+```
+
+```{r echo=TRUE, eval=FALSE}
+str_locate("This", "s") # gives the starting and ending position of the 's' in 'This'
+```
+
+**How can these two functions** (<code>str_sub</code>, <code>str_locate</code>) **be used in conjunction to deal with the first issue identified above? Try this out using the first entry from customer.**
+
+The patterns that are located can be much more general than a literal letter. These patters are known as regular expressions. For example, suppose we would like to locate the part of the string that consists of the letter a followed by any number. The regular expression that represents any digit is <code>\\d</code>.
+
+```{r echo=TRUE, eval=FALSE}
+str_locate("aardvark a3", "a\\d") # 10 11
+```
+
+For more on matching regular expressions in R, [see this document on the topic](https://r4ds.had.co.nz/strings.html#matching-patterns-with-regular-expressions). 
+
+Next, let's deal with the product variable. This variable contains two potentially useful pieces of information and one useless piece. They are separated by a dash. This presents a good use case for the <code>str_split</code> function. Here is an example where we have two data points that are separated by a colon and we would like to extract them.
+
+```{r echo=TRUE, eval=FALSE}
+str_split("200:300", ":", simplify = T) # 200 300
+```
+
+**What should we split the product variable on?**  
+
+This will give us a matrix, with two useful columns. We want to grab these columns and include them in our data frame as <code>size</code> and <code>product_name</code>. [Refresher on how to carry out these sorts of tasks - How R thinks about data.](http://htmlpreview.github.io/?https://github.com/andrewpbray/oiLabs-base-R/blob/master/intro_to_data/intro_to_data.html)
+
+## Assignment 1
+
+1. Use the functions described above (<code>str_sub</code>, <code>str_locate</code>, and <code>str_split</code>) to obtain the following cleaned up data frame.
+
+```{r}
+
+df2 = df %>% mutate(customer = str_sub(customer, start = str_locate(customer, "-")[,1] + 2)) %>%
+  mutate(size = str_split(product, " - ", simplify = T)[,2]) %>%
+  mutate(product = str_split(product, " - ", simplify = T)[,3]) %>%
+  mutate(business_unit = str_sub(business_unit, start = str_locate(business_unit, "\\d+ ")[,2] + 1)) #%>%
+  #select(-product)
+
+kable(head(df2))
+
+```
+
+2. **Dealing with dates (part 1)**. The output from part one gets us pretty close to our desired analytic dataset. However, it turns out that for our analysis we would like the data to be in *long* format, where each row contains information on a single month. So, the first row of the dataset would have the January 2022 units of 9 gal Jelly shipped to Shaw's. This is achieved using the function <code>pivot_longer</code>. [Let's take a look at the example from the documentation](https://tidyr.tidyverse.org/reference/pivot_longer.html) to figure out what parameters to use to achieve this
+
+Once you figure out the appropriate arguments for <code>pivot_longer</code>, the <code>head</code> of your new data frame should look like this:
+
+```{r}
+# pivot_longer(df2, cols = c(`1-1-2022`,`2-1-2022`), names_to = "month", values_to = "units")
+df3 = pivot_longer(df2, cols = matches("\\d"), names_to = "month", values_to = "units")
+kable(head(df3))
+```
+
+3. **Dealing with dates (part 2)**. Finally, we want R to recognize our <code>month</code> variable as a date (rather than a character). A helpful package for dates is <code>lubridate</code>. Download and load this package into your workspace and use the function <code>mdy</code> on the <code>month</code> variable to coerce this variable to become a date. The <code>str</code> of your data frame should now look like this:
+
+```{r}
+# pivot_longer(df2, cols = c(`1-1-2022`,`2-1-2022`), names_to = "month", values_to = "units")
+df3 = mutate(df3, month = mdy(month))
+kable(str(df3))
+```
+
+Notice how the month variable has format *Date*. Your data frame is now ready for exploration and analysis!

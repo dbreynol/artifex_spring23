@@ -1,0 +1,85 @@
+# Data Manipulation
+
+We will discuss data transformation using data for all flights that departed NYC (i.e. JFK, LGA or EWR) in 2013. This data is contained in the <code>flights</code> data frame that comes from the <code>nycflights13</code> package. Before beginning, install this package and load it (using <code>nycflights13</code>).
+
+There are five key dplyr functions that allow you to solve the vast majority of your data manipulation challenges:
+
+1. Pick observations by their values (<code>filter()</code>).
+2. Reorder the rows (<code>arrange()</code>).
+3. Pick variables by their names (<code>select()</code>).
+4. Create new variables with functions of existing variables (<code>mutate()</code>).
+5. Collapse many values down to a single summary (<code>summarise()</code>). This is often used in conjunction with <code>group_by()</code>, which changes the scope of each function from operating on the entire dataset to operating on it group-by-group.
+
+Let's go through a quick use case for each of these. Further detail can be found [here](https://r4ds.had.co.nz/transform.html).
+
+## Filter
+
+Suppose we want to look at just morning flights (before 10am).
+
+```{r echo=TRUE, eval=FALSE}
+morning_df = filter(flights, hour < 10)
+```
+
+How about morning flights in January. 
+
+```{r echo=TRUE, eval=FALSE}
+morning_df = filter(flights, hour < 10, month == 1)
+```
+
+## Arrange
+
+What are the attributes of the flights with the biggest departure delays?
+
+```{r echo=TRUE, eval=FALSE}
+arrange(flights, desc(dep_delay))
+```
+
+## Select
+
+Suppose we don't care about the flight number. 
+
+```{r echo=TRUE, eval=FALSE}
+arrange(flights, !flight)
+```
+
+## Mutate
+
+Suppose we want to add a speed variable.
+
+```{r echo=TRUE, eval=FALSE}
+mutate(flights, speed = distance/air_time * 60)
+```
+
+## Group-By/ Summarise
+
+Suppose we want to know the mean departure delay by airline.
+
+```{r echo=TRUE, eval=FALSE}
+flights %>% 
+  group_by(carrier) %>% 
+  summarize(mean_delay = mean(dep_delay, na.rm = T), n = n()) %>% 
+  arrange(desc(mean_delay))
+```
+
+
+## Assignment 2
+
+1. How many flights ... 
+
+a. Had an arrival delay of two or more hours
+b. Flew to Houston (IAH or HOU)
+c. Were operated by United, American, or Delta
+d. Departed in summer (July, August, and September)
+e. Arrived more than two hours late, but didn’t leave late
+f. Were delayed by at least an hour, but made up over 30 minutes in flight
+
+2. Add two new variables to flights that convert <code>dep_time</code> and <code>arr_time</code> to a more convenient representation of number of minutes since midnight.
+
+3. Look at the number of canceled flights per day. Is there a pattern over the course of the year? How about the proportion of canceled flights over the course of the year?
+
+4. What time of day should you fly if you want to avoid delays as much as possible?
+
+
+
+
+

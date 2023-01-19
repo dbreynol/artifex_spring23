@@ -1,0 +1,15 @@
+tab:unnamed-chunk-3
+data-processing
+cleaning-up-strings
+assignment-1
+data-manipulation
+filter
+arrange
+select
+mutate
+group-by-summarise
+assignment-2
+time-series
+decomposition
+forecasting
+statistical-model
