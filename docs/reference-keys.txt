@@ -1,12 +1,10 @@
 tab:unnamed-chunk-3
-tab:unnamed-chunk-12
+exploratory-data-analysis
+including-plots
+other-topics
 data-processing
 cleaning-up-strings
 assignment-1
-other-topics
-data-processing-1
-cleaning-up-strings-1
-assignment-1-1
 data-manipulation
 filter
 arrange
