@@ -1,8 +1,12 @@
 tab:unnamed-chunk-3
-tab:unnamed-chunk-18
+tab:unnamed-chunk-12
 data-processing
 cleaning-up-strings
 assignment-1
+other-topics
+data-processing-1
+cleaning-up-strings-1
+assignment-1-1
 data-manipulation
 filter
 arrange
@@ -10,10 +14,6 @@ select
 mutate
 group-by-summarise
 assignment-2
-other-topics
-data-processing-1
-cleaning-up-strings-1
-assignment-1-1
 time-series
 decomposition
 forecasting
