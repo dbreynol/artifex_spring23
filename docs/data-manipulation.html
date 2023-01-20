@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 2 Data Manipulation | Artifex - Fall 2022</title>
+  <title>Chapter 2 Data Manipulation | Artifex - Spring 2023</title>
   <meta name="description" content="(Partial) course materials for Artifex, Fall 2022." />
   <meta name="generator" content="bookdown 0.32 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 2 Data Manipulation | Artifex - Fall 2022" />
+  <meta property="og:title" content="Chapter 2 Data Manipulation | Artifex - Spring 2023" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="(Partial) course materials for Artifex, Fall 2022." />
   <meta name="github-repo" content="openscapes/series" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 2 Data Manipulation | Artifex - Fall 2022" />
+  <meta name="twitter:title" content="Chapter 2 Data Manipulation | Artifex - Spring 2023" />
   
   <meta name="twitter:description" content="(Partial) course materials for Artifex, Fall 2022." />
   
@@ -23,7 +23,7 @@
 <meta name="author" content="David Reynolds" />
 
 
-<meta name="date" content="2023-01-19" />
+<meta name="date" content="2023-01-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -135,10 +135,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">Artifex Fall 2022</a></li>
+<li><a href="./">Artifex Spring 2023</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Course Overview - Artifex Fall 2022</a>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Course Overview - Artifex Spring 2023</a>
 <ul>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#prerequisites-and-preparations"><i class="fa fa-check"></i>Prerequisites and Preparations</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#references"><i class="fa fa-check"></i>References</a></li>
@@ -172,7 +172,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Artifex - Fall 2022</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Artifex - Spring 2023</a>
           </h1>
         </div>
 
@@ -195,32 +195,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="filter" class="section level2 hasAnchor" number="2.1">
 <h2><span class="header-section-number">2.1</span> Filter<a href="data-manipulation.html#filter" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Suppose we want to look at just morning flights (before 10am).</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="data-manipulation.html#cb7-1" aria-hidden="true" tabindex="-1"></a>morning_df <span class="ot">=</span> <span class="fu">filter</span>(flights, hour <span class="sc">&lt;</span> <span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="data-manipulation.html#cb8-1" aria-hidden="true" tabindex="-1"></a>morning_df <span class="ot">=</span> <span class="fu">filter</span>(flights, hour <span class="sc">&lt;</span> <span class="dv">10</span>)</span></code></pre></div>
 <p>How about morning flights in January.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="data-manipulation.html#cb8-1" aria-hidden="true" tabindex="-1"></a>morning_df <span class="ot">=</span> <span class="fu">filter</span>(flights, hour <span class="sc">&lt;</span> <span class="dv">10</span>, month <span class="sc">==</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="data-manipulation.html#cb9-1" aria-hidden="true" tabindex="-1"></a>morning_df <span class="ot">=</span> <span class="fu">filter</span>(flights, hour <span class="sc">&lt;</span> <span class="dv">10</span>, month <span class="sc">==</span> <span class="dv">1</span>)</span></code></pre></div>
 </div>
 <div id="arrange" class="section level2 hasAnchor" number="2.2">
 <h2><span class="header-section-number">2.2</span> Arrange<a href="data-manipulation.html#arrange" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>What are the attributes of the flights with the biggest departure delays?</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="data-manipulation.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(flights, <span class="fu">desc</span>(dep_delay))</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="data-manipulation.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(flights, <span class="fu">desc</span>(dep_delay))</span></code></pre></div>
 </div>
 <div id="select" class="section level2 hasAnchor" number="2.3">
 <h2><span class="header-section-number">2.3</span> Select<a href="data-manipulation.html#select" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Suppose we don’t care about the flight number.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="data-manipulation.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(flights, <span class="sc">!</span>flight)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="data-manipulation.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(flights, <span class="sc">!</span>flight)</span></code></pre></div>
 </div>
 <div id="mutate" class="section level2 hasAnchor" number="2.4">
 <h2><span class="header-section-number">2.4</span> Mutate<a href="data-manipulation.html#mutate" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Suppose we want to add a speed variable.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="data-manipulation.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(flights, <span class="at">speed =</span> distance<span class="sc">/</span>air_time <span class="sc">*</span> <span class="dv">60</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="data-manipulation.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(flights, <span class="at">speed =</span> distance<span class="sc">/</span>air_time <span class="sc">*</span> <span class="dv">60</span>)</span></code></pre></div>
 </div>
 <div id="group-by-summarise" class="section level2 hasAnchor" number="2.5">
 <h2><span class="header-section-number">2.5</span> Group-By/ Summarise<a href="data-manipulation.html#group-by-summarise" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Suppose we want to know the mean departure delay by airline.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="data-manipulation.html#cb12-1" aria-hidden="true" tabindex="-1"></a>flights <span class="sc">%&gt;%</span> </span>
-<span id="cb12-2"><a href="data-manipulation.html#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(carrier) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-3"><a href="data-manipulation.html#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_delay =</span> <span class="fu">mean</span>(dep_delay, <span class="at">na.rm =</span> T), <span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-4"><a href="data-manipulation.html#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(mean_delay))</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="data-manipulation.html#cb13-1" aria-hidden="true" tabindex="-1"></a>flights <span class="sc">%&gt;%</span> </span>
+<span id="cb13-2"><a href="data-manipulation.html#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(carrier) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-3"><a href="data-manipulation.html#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_delay =</span> <span class="fu">mean</span>(dep_delay, <span class="at">na.rm =</span> T), <span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-4"><a href="data-manipulation.html#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(mean_delay))</span></code></pre></div>
 </div>
 <div id="assignment-2" class="section level2 hasAnchor" number="2.6">
 <h2><span class="header-section-number">2.6</span> Assignment 2<a href="data-manipulation.html#assignment-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>

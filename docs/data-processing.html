@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 1 Data Processing | Artifex - Fall 2022</title>
+  <title>Chapter 1 Data Processing | Artifex - Spring 2023</title>
   <meta name="description" content="(Partial) course materials for Artifex, Fall 2022." />
   <meta name="generator" content="bookdown 0.32 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 1 Data Processing | Artifex - Fall 2022" />
+  <meta property="og:title" content="Chapter 1 Data Processing | Artifex - Spring 2023" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="(Partial) course materials for Artifex, Fall 2022." />
   <meta name="github-repo" content="openscapes/series" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 1 Data Processing | Artifex - Fall 2022" />
+  <meta name="twitter:title" content="Chapter 1 Data Processing | Artifex - Spring 2023" />
   
   <meta name="twitter:description" content="(Partial) course materials for Artifex, Fall 2022." />
   
@@ -23,7 +23,7 @@
 <meta name="author" content="David Reynolds" />
 
 
-<meta name="date" content="2023-01-19" />
+<meta name="date" content="2023-01-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -135,10 +135,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">Artifex Fall 2022</a></li>
+<li><a href="./">Artifex Spring 2023</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Course Overview - Artifex Fall 2022</a>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Course Overview - Artifex Spring 2023</a>
 <ul>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#prerequisites-and-preparations"><i class="fa fa-check"></i>Prerequisites and Preparations</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#references"><i class="fa fa-check"></i>References</a></li>
@@ -172,7 +172,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Artifex - Fall 2022</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Artifex - Spring 2023</a>
           </h1>
         </div>
 
@@ -183,20 +183,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="data-processing" class="section level1 hasAnchor" number="1">
 <h1><span class="header-section-number">Chapter 1</span> Data Processing<a href="data-processing.html#data-processing" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>To motivate this section on data processing, we will use the (fictional) data below that contains order information for a retail company. As is almost always the case, this data needs some pre-processing before it is in shape for exploration and analysis. Copy and paste the code below to obtain this data frame in your environment. The processing steps we carry out below rely on the <code>lubridate</code> package, so start your script with <code>library(lubridate)</code>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="data-processing.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb1-2"><a href="data-processing.html#cb1-2" aria-hidden="true" tabindex="-1"></a>customer <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;113 - Shaws&quot;</span>, <span class="st">&quot;217 - Shaws&quot;</span>, <span class="st">&quot;2114 - WalMart&quot;</span>, <span class="st">&quot;99 - WalMart&quot;</span>,</span>
-<span id="cb1-3"><a href="data-processing.html#cb1-3" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;23 - CVS&quot;</span>, <span class="st">&quot;09 - CVS&quot;</span>) <span class="co"># numbers dash name</span></span>
-<span id="cb1-4"><a href="data-processing.html#cb1-4" aria-hidden="true" tabindex="-1"></a>product <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;WX1X - 9 gal - Jelly&quot;</span>, <span class="st">&quot;WX1P - 4 gal - Jelly&quot;</span>,</span>
-<span id="cb1-5"><a href="data-processing.html#cb1-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;QP1X - 11 gal - Grape Juice&quot;</span>, <span class="st">&quot;QP1 - 7 gal - Fruit Juice&quot;</span>,</span>
-<span id="cb1-6"><a href="data-processing.html#cb1-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;TYL - 1 gal - Peanut Butter&quot;</span>, <span class="st">&quot;LL - 2 gal - Jam&quot;</span>) <span class="co"># letters size description</span></span>
-<span id="cb1-7"><a href="data-processing.html#cb1-7" aria-hidden="true" tabindex="-1"></a>business_unit <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;123 Retail&quot;</span>, <span class="st">&quot;437 Consumer&quot;</span>,</span>
-<span id="cb1-8"><a href="data-processing.html#cb1-8" aria-hidden="true" tabindex="-1"></a>                  <span class="st">&quot;990 International&quot;</span>, <span class="st">&quot;222 Retail&quot;</span>,</span>
-<span id="cb1-9"><a href="data-processing.html#cb1-9" aria-hidden="true" tabindex="-1"></a>                  <span class="st">&quot;49 Consumer&quot;</span>, <span class="st">&quot;09 International&quot;</span>) <span class="co"># number dash name</span></span>
-<span id="cb1-10"><a href="data-processing.html#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="data-processing.html#cb1-11" aria-hidden="true" tabindex="-1"></a>df <span class="ot">=</span> <span class="fu">data.frame</span>(customer, product, business_unit, </span>
-<span id="cb1-12"><a href="data-processing.html#cb1-12" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;1-1-2022&quot;</span> <span class="ot">=</span> <span class="fu">rpois</span>(<span class="dv">6</span>, <span class="dv">1100</span>),</span>
-<span id="cb1-13"><a href="data-processing.html#cb1-13" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;2-1-2022&quot;</span> <span class="ot">=</span> <span class="fu">rpois</span>(<span class="dv">6</span>, <span class="dv">1200</span>),</span>
-<span id="cb1-14"><a href="data-processing.html#cb1-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">check.names =</span> F)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="data-processing.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb2-2"><a href="data-processing.html#cb2-2" aria-hidden="true" tabindex="-1"></a>customer <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;113 - Shaws&quot;</span>, <span class="st">&quot;217 - Shaws&quot;</span>, <span class="st">&quot;2114 - WalMart&quot;</span>, <span class="st">&quot;99 - WalMart&quot;</span>,</span>
+<span id="cb2-3"><a href="data-processing.html#cb2-3" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;23 - CVS&quot;</span>, <span class="st">&quot;09 - CVS&quot;</span>) <span class="co"># numbers dash name</span></span>
+<span id="cb2-4"><a href="data-processing.html#cb2-4" aria-hidden="true" tabindex="-1"></a>product <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;WX1X - 9 gal - Jelly&quot;</span>, <span class="st">&quot;WX1P - 4 gal - Jelly&quot;</span>,</span>
+<span id="cb2-5"><a href="data-processing.html#cb2-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;QP1X - 11 gal - Grape Juice&quot;</span>, <span class="st">&quot;QP1 - 7 gal - Fruit Juice&quot;</span>,</span>
+<span id="cb2-6"><a href="data-processing.html#cb2-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;TYL - 1 gal - Peanut Butter&quot;</span>, <span class="st">&quot;LL - 2 gal - Jam&quot;</span>) <span class="co"># letters size description</span></span>
+<span id="cb2-7"><a href="data-processing.html#cb2-7" aria-hidden="true" tabindex="-1"></a>business_unit <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;123 Retail&quot;</span>, <span class="st">&quot;437 Consumer&quot;</span>,</span>
+<span id="cb2-8"><a href="data-processing.html#cb2-8" aria-hidden="true" tabindex="-1"></a>                  <span class="st">&quot;990 International&quot;</span>, <span class="st">&quot;222 Retail&quot;</span>,</span>
+<span id="cb2-9"><a href="data-processing.html#cb2-9" aria-hidden="true" tabindex="-1"></a>                  <span class="st">&quot;49 Consumer&quot;</span>, <span class="st">&quot;09 International&quot;</span>) <span class="co"># number dash name</span></span>
+<span id="cb2-10"><a href="data-processing.html#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="data-processing.html#cb2-11" aria-hidden="true" tabindex="-1"></a>df <span class="ot">=</span> <span class="fu">data.frame</span>(customer, product, business_unit, </span>
+<span id="cb2-12"><a href="data-processing.html#cb2-12" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;1-1-2022&quot;</span> <span class="ot">=</span> <span class="fu">rpois</span>(<span class="dv">6</span>, <span class="dv">1100</span>),</span>
+<span id="cb2-13"><a href="data-processing.html#cb2-13" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;2-1-2022&quot;</span> <span class="ot">=</span> <span class="fu">rpois</span>(<span class="dv">6</span>, <span class="dv">1200</span>),</span>
+<span id="cb2-14"><a href="data-processing.html#cb2-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">check.names =</span> F)</span></code></pre></div>
 <table>
 <caption><span id="tab:unnamed-chunk-3">Table 1.1: </span>A fake dataset on product shipments.</caption>
 <colgroup>
@@ -271,17 +271,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>The product variable includes the size which would ideally exist in its own column (i.e., we want a size column whose first entry is 9)</li>
 </ol>
 <p>Let’s work through each of these using the functions <code>str_sub</code>, <code>str_locate</code>, and <code>str_split</code>. Let’s first go over what these functions do and how they can be used for this task.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="data-processing.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_sub</span>(<span class="st">&quot;The big short&quot;</span>, <span class="at">start =</span> <span class="dv">5</span>, <span class="at">end =</span> <span class="dv">7</span>) <span class="co"># big</span></span>
-<span id="cb2-2"><a href="data-processing.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># the input can also be a vector</span></span>
-<span id="cb2-3"><a href="data-processing.html#cb2-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Apple&quot;</span>, <span class="st">&quot;Banana&quot;</span>, <span class="st">&quot;Pear&quot;</span>) <span class="co"># character vector</span></span>
-<span id="cb2-4"><a href="data-processing.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str_sub</span>(x, <span class="dv">1</span>, <span class="dv">3</span>) <span class="co"># &quot;App&quot; &quot;Ban&quot; &quot;Pea&quot;</span></span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="data-processing.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_locate</span>(<span class="st">&quot;This&quot;</span>, <span class="st">&quot;s&quot;</span>) <span class="co"># gives the starting and ending position of the &#39;s&#39; in &#39;This&#39;</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="data-processing.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_sub</span>(<span class="st">&quot;The big short&quot;</span>, <span class="at">start =</span> <span class="dv">5</span>, <span class="at">end =</span> <span class="dv">7</span>) <span class="co"># big</span></span>
+<span id="cb3-2"><a href="data-processing.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># the input can also be a vector</span></span>
+<span id="cb3-3"><a href="data-processing.html#cb3-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Apple&quot;</span>, <span class="st">&quot;Banana&quot;</span>, <span class="st">&quot;Pear&quot;</span>) <span class="co"># character vector</span></span>
+<span id="cb3-4"><a href="data-processing.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str_sub</span>(x, <span class="dv">1</span>, <span class="dv">3</span>) <span class="co"># &quot;App&quot; &quot;Ban&quot; &quot;Pea&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="data-processing.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_locate</span>(<span class="st">&quot;This&quot;</span>, <span class="st">&quot;s&quot;</span>) <span class="co"># gives the starting and ending position of the &#39;s&#39; in &#39;This&#39;</span></span></code></pre></div>
 <p><strong>How can these two functions</strong> (<code>str_sub</code>, <code>str_locate</code>) <strong>be used in conjunction to deal with the first issue identified above? Try this out using the first entry from customer.</strong></p>
 <p>The patterns that are located can be much more general than a literal letter. These patters are known as regular expressions. For example, suppose we would like to locate the part of the string that consists of the letter a followed by any number. The regular expression that represents any digit is <code>\d</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="data-processing.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_locate</span>(<span class="st">&quot;aardvark a3&quot;</span>, <span class="st">&quot;a</span><span class="sc">\\</span><span class="st">d&quot;</span>) <span class="co"># 10 11</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="data-processing.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_locate</span>(<span class="st">&quot;aardvark a3&quot;</span>, <span class="st">&quot;a</span><span class="sc">\\</span><span class="st">d&quot;</span>) <span class="co"># 10 11</span></span></code></pre></div>
 <p>For more on matching regular expressions in R, <a href="https://r4ds.had.co.nz/strings.html#matching-patterns-with-regular-expressions">see this document on the topic</a>.</p>
 <p>Next, let’s deal with the product variable. This variable contains two potentially useful pieces of information and one useless piece. They are separated by a dash. This presents a good use case for the <code>str_split</code> function. Here is an example where we have two data points that are separated by a colon and we would like to extract them.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="data-processing.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_split</span>(<span class="st">&quot;200:300&quot;</span>, <span class="st">&quot;:&quot;</span>, <span class="at">simplify =</span> T) <span class="co"># 200 300</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="data-processing.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_split</span>(<span class="st">&quot;200:300&quot;</span>, <span class="st">&quot;:&quot;</span>, <span class="at">simplify =</span> T) <span class="co"># 200 300</span></span></code></pre></div>
 <p><strong>What should we split the product variable on?</strong></p>
 <p>This will give us a matrix, with two useful columns. We want to grab these columns and include them in our data frame as <code>size</code> and <code>product_name</code>. <a href="http://htmlpreview.github.io/?https://github.com/andrewpbray/oiLabs-base-R/blob/master/intro_to_data/intro_to_data.html">Refresher on how to carry out these sorts of tasks - How R thinks about data.</a></p>
 </div>

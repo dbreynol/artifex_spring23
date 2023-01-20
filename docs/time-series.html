@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 3 Time Series | Artifex - Fall 2022</title>
+  <title>Chapter 3 Time Series | Artifex - Spring 2023</title>
   <meta name="description" content="(Partial) course materials for Artifex, Fall 2022." />
   <meta name="generator" content="bookdown 0.32 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 3 Time Series | Artifex - Fall 2022" />
+  <meta property="og:title" content="Chapter 3 Time Series | Artifex - Spring 2023" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="(Partial) course materials for Artifex, Fall 2022." />
   <meta name="github-repo" content="openscapes/series" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 3 Time Series | Artifex - Fall 2022" />
+  <meta name="twitter:title" content="Chapter 3 Time Series | Artifex - Spring 2023" />
   
   <meta name="twitter:description" content="(Partial) course materials for Artifex, Fall 2022." />
   
@@ -23,7 +23,7 @@
 <meta name="author" content="David Reynolds" />
 
 
-<meta name="date" content="2023-01-19" />
+<meta name="date" content="2023-01-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -135,10 +135,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">Artifex Fall 2022</a></li>
+<li><a href="./">Artifex Spring 2023</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Course Overview - Artifex Fall 2022</a>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Course Overview - Artifex Spring 2023</a>
 <ul>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#prerequisites-and-preparations"><i class="fa fa-check"></i>Prerequisites and Preparations</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#references"><i class="fa fa-check"></i>References</a></li>
@@ -172,7 +172,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Artifex - Fall 2022</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Artifex - Spring 2023</a>
           </h1>
         </div>
 
@@ -187,40 +187,40 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>We want to decompose our time series into three parts: a trend component (<span class="math inline">\(T\)</span>), a seasonality component (<span class="math inline">\(S\)</span>), and a random component (<span class="math inline">\(R\)</span>). That is, for each observation <span class="math inline">\(Y_t\)</span>, we want to break it down into three parts:</p>
 <p><span class="math inline">\(Y_T = T_t + S_t + R_t\)</span></p>
 <p>First, let’s talk about the trend component (T). The trend component is a moving average, which you can obtain using the <code>ma</code> function within the <em>forecast</em> library.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="time-series.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb13-2"><a href="time-series.html#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-3"><a href="time-series.html#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># generate some fake data that resembles our real dataset (noce the week_no variable, which </span></span>
-<span id="cb13-4"><a href="time-series.html#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># corresponds with the enterprise week number from your original data)</span></span>
-<span id="cb13-5"><a href="time-series.html#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-6"><a href="time-series.html#cb13-6" aria-hidden="true" tabindex="-1"></a>trend <span class="ot">=</span> <span class="fu">seq</span>( <span class="at">from =</span> <span class="dv">10</span>, <span class="at">to =</span> <span class="dv">10</span> <span class="sc">+</span> <span class="dv">52</span> <span class="sc">*</span> <span class="dv">3</span> <span class="sc">-</span> <span class="dv">1</span>, <span class="at">by =</span> <span class="dv">1</span>)</span>
-<span id="cb13-7"><a href="time-series.html#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-8"><a href="time-series.html#cb13-8" aria-hidden="true" tabindex="-1"></a>df <span class="ot">=</span> <span class="fu">data.frame</span>( <span class="at">invoiced =</span> trend <span class="sc">+</span> (<span class="fu">rnorm</span>(<span class="dv">52</span> <span class="sc">*</span> <span class="dv">3</span>, <span class="at">mean =</span> <span class="dv">25</span>, <span class="at">sd =</span> <span class="dv">40</span>)), </span>
-<span id="cb13-9"><a href="time-series.html#cb13-9" aria-hidden="true" tabindex="-1"></a>                 <span class="at">week_no =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">52</span>, <span class="dv">3</span>), <span class="co"># week number</span></span>
-<span id="cb13-10"><a href="time-series.html#cb13-10" aria-hidden="true" tabindex="-1"></a>                 <span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span>(<span class="dv">52</span> <span class="sc">*</span> <span class="dv">3</span>)) </span>
-<span id="cb13-11"><a href="time-series.html#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(df<span class="sc">$</span>invoiced, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="time-series.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb14-2"><a href="time-series.html#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="time-series.html#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># generate some fake data that resembles our real dataset (noce the week_no variable, which </span></span>
+<span id="cb14-4"><a href="time-series.html#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># corresponds with the enterprise week number from your original data)</span></span>
+<span id="cb14-5"><a href="time-series.html#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="time-series.html#cb14-6" aria-hidden="true" tabindex="-1"></a>trend <span class="ot">=</span> <span class="fu">seq</span>( <span class="at">from =</span> <span class="dv">10</span>, <span class="at">to =</span> <span class="dv">10</span> <span class="sc">+</span> <span class="dv">52</span> <span class="sc">*</span> <span class="dv">3</span> <span class="sc">-</span> <span class="dv">1</span>, <span class="at">by =</span> <span class="dv">1</span>)</span>
+<span id="cb14-7"><a href="time-series.html#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="time-series.html#cb14-8" aria-hidden="true" tabindex="-1"></a>df <span class="ot">=</span> <span class="fu">data.frame</span>( <span class="at">invoiced =</span> trend <span class="sc">+</span> (<span class="fu">rnorm</span>(<span class="dv">52</span> <span class="sc">*</span> <span class="dv">3</span>, <span class="at">mean =</span> <span class="dv">25</span>, <span class="at">sd =</span> <span class="dv">40</span>)), </span>
+<span id="cb14-9"><a href="time-series.html#cb14-9" aria-hidden="true" tabindex="-1"></a>                 <span class="at">week_no =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">52</span>, <span class="dv">3</span>), <span class="co"># week number</span></span>
+<span id="cb14-10"><a href="time-series.html#cb14-10" aria-hidden="true" tabindex="-1"></a>                 <span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span>(<span class="dv">52</span> <span class="sc">*</span> <span class="dv">3</span>)) </span>
+<span id="cb14-11"><a href="time-series.html#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(df<span class="sc">$</span>invoiced, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>)</span></code></pre></div>
 <p><img src="series_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="time-series.html#cb14-1" aria-hidden="true" tabindex="-1"></a>y_ts <span class="ot">=</span> <span class="fu">ts</span>(df<span class="sc">$</span>invoiced, <span class="at">frequency =</span> <span class="dv">52</span>) <span class="co"># make your data into a time series object</span></span>
-<span id="cb14-2"><a href="time-series.html#cb14-2" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>trend <span class="ot">=</span> <span class="fu">ma</span>(y_ts, <span class="at">order =</span> <span class="dv">52</span>) <span class="co"># use the ma function from the forecast library</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="time-series.html#cb15-1" aria-hidden="true" tabindex="-1"></a>y_ts <span class="ot">=</span> <span class="fu">ts</span>(df<span class="sc">$</span>invoiced, <span class="at">frequency =</span> <span class="dv">52</span>) <span class="co"># make your data into a time series object</span></span>
+<span id="cb15-2"><a href="time-series.html#cb15-2" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>trend <span class="ot">=</span> <span class="fu">ma</span>(y_ts, <span class="at">order =</span> <span class="dv">52</span>) <span class="co"># use the ma function from the forecast library</span></span></code></pre></div>
 <p>Now that we have added a trend variable to our data frame, let’s get the seasonal (<span class="math inline">\(S\)</span>) component. To estimate the seasonal component for each week, simply average the detrended values for that week. These seasonal component values are then adjusted to ensure that they add to zero.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="time-series.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. subtract the trend</span></span>
-<span id="cb15-2"><a href="time-series.html#cb15-2" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>detrend <span class="ot">=</span> df<span class="sc">$</span>invoiced <span class="sc">-</span> df<span class="sc">$</span>trend</span>
-<span id="cb15-3"><a href="time-series.html#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="time-series.html#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. group by week number and take the average of the de-trended values</span></span>
-<span id="cb15-5"><a href="time-series.html#cb15-5" aria-hidden="true" tabindex="-1"></a>df <span class="ot">=</span> df <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(week_no) <span class="sc">%&gt;%</span> </span>
-<span id="cb15-6"><a href="time-series.html#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">S1 =</span> <span class="fu">mean</span>(detrend, <span class="at">na.rm =</span> T)) <span class="sc">%&gt;%</span> </span>
-<span id="cb15-7"><a href="time-series.html#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb15-8"><a href="time-series.html#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">S =</span> S1 <span class="sc">-</span> <span class="fu">mean</span>(S1)) <span class="sc">%&gt;%</span> <span class="co"># make sure the sum of the seasonal components is 0</span></span>
-<span id="cb15-9"><a href="time-series.html#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">!</span><span class="fu">c</span>(detrend, S1))</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="time-series.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. subtract the trend</span></span>
+<span id="cb16-2"><a href="time-series.html#cb16-2" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>detrend <span class="ot">=</span> df<span class="sc">$</span>invoiced <span class="sc">-</span> df<span class="sc">$</span>trend</span>
+<span id="cb16-3"><a href="time-series.html#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="time-series.html#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. group by week number and take the average of the de-trended values</span></span>
+<span id="cb16-5"><a href="time-series.html#cb16-5" aria-hidden="true" tabindex="-1"></a>df <span class="ot">=</span> df <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(week_no) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-6"><a href="time-series.html#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">S1 =</span> <span class="fu">mean</span>(detrend, <span class="at">na.rm =</span> T)) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-7"><a href="time-series.html#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb16-8"><a href="time-series.html#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">S =</span> S1 <span class="sc">-</span> <span class="fu">mean</span>(S1)) <span class="sc">%&gt;%</span> <span class="co"># make sure the sum of the seasonal components is 0</span></span>
+<span id="cb16-9"><a href="time-series.html#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">!</span><span class="fu">c</span>(detrend, S1))</span></code></pre></div>
 <p>Finally, the random component is calculated by subtracting the estimated seasonal and trend-cycle components. That is,</p>
 <p><span class="math inline">\(R_t = Y_t - T_t - S_t\)</span>.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="time-series.html#cb16-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">=</span> <span class="fu">mutate</span>(df, <span class="at">R =</span> invoiced <span class="sc">-</span> trend <span class="sc">-</span> S)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="time-series.html#cb17-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">=</span> <span class="fu">mutate</span>(df, <span class="at">R =</span> invoiced <span class="sc">-</span> trend <span class="sc">-</span> S)</span></code></pre></div>
 <p>Now, plot each line:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="time-series.html#cb17-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
-<span id="cb17-2"><a href="time-series.html#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">!</span>(<span class="fu">c</span>(<span class="st">&quot;week_no&quot;</span>, <span class="st">&quot;id&quot;</span>))) <span class="sc">%&gt;%</span> </span>
-<span id="cb17-3"><a href="time-series.html#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(id, value, <span class="at">color =</span> name)) <span class="sc">+</span> </span>
-<span id="cb17-4"><a href="time-series.html#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> </span>
-<span id="cb17-5"><a href="time-series.html#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> </span>
-<span id="cb17-6"><a href="time-series.html#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Decomposition of invoiced time series&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="time-series.html#cb18-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
+<span id="cb18-2"><a href="time-series.html#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">!</span>(<span class="fu">c</span>(<span class="st">&quot;week_no&quot;</span>, <span class="st">&quot;id&quot;</span>))) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-3"><a href="time-series.html#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(id, value, <span class="at">color =</span> name)) <span class="sc">+</span> </span>
+<span id="cb18-4"><a href="time-series.html#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> </span>
+<span id="cb18-5"><a href="time-series.html#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> </span>
+<span id="cb18-6"><a href="time-series.html#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Decomposition of invoiced time series&quot;</span>)</span></code></pre></div>
 <p><img src="series_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 </div>
 <div id="forecasting" class="section level2 hasAnchor" number="3.2">
@@ -243,25 +243,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 \hat{y}_{T+h | T} = l_T + h b_T,
 \end{equation}\]</span></p>
 <p>Where <span class="math inline">\(l\)</span> is the estimated level of the time series and <span class="math inline">\(b_T\)</span> is the estimated trend at time <span class="math inline">\(T\)</span>. What does this expression imply about forecasts from this model? This is implemented in <code>holt</code> below.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="time-series.html#cb18-1" aria-hidden="true" tabindex="-1"></a>fx1 <span class="ot">&lt;-</span> <span class="fu">ses</span>(y_ts, <span class="at">h=</span><span class="dv">5</span>)</span>
-<span id="cb18-2"><a href="time-series.html#cb18-2" aria-hidden="true" tabindex="-1"></a>fx2 <span class="ot">&lt;-</span> <span class="fu">holt</span>(y_ts, <span class="at">h=</span><span class="dv">15</span>)</span>
-<span id="cb18-3"><a href="time-series.html#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-4"><a href="time-series.html#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">accuracy</span>(fx1),<span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="time-series.html#cb19-1" aria-hidden="true" tabindex="-1"></a>fx1 <span class="ot">&lt;-</span> <span class="fu">ses</span>(y_ts, <span class="at">h=</span><span class="dv">5</span>)</span>
+<span id="cb19-2"><a href="time-series.html#cb19-2" aria-hidden="true" tabindex="-1"></a>fx2 <span class="ot">&lt;-</span> <span class="fu">holt</span>(y_ts, <span class="at">h=</span><span class="dv">15</span>)</span>
+<span id="cb19-3"><a href="time-series.html#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="time-series.html#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">accuracy</span>(fx1),<span class="dv">2</span>)</span></code></pre></div>
 <pre><code>##                ME  RMSE   MAE    MPE  MAPE MASE  ACF1
 ## Training set 6.46 37.15 28.71 -21.53 55.35 0.56 -0.08</code></pre>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="time-series.html#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(y_ts) <span class="sc">+</span></span>
-<span id="cb20-2"><a href="time-series.html#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(fx1, <span class="at">series=</span><span class="st">&quot;Simple Exponential Smoothing&quot;</span>, <span class="at">PI=</span>F) <span class="sc">+</span></span>
-<span id="cb20-3"><a href="time-series.html#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(fx2, <span class="at">series=</span><span class="st">&quot;Holt Winters&quot;</span>, <span class="at">PI=</span>F) <span class="sc">+</span> </span>
-<span id="cb20-4"><a href="time-series.html#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Invoiced&quot;</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">&quot;Year&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="time-series.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(y_ts) <span class="sc">+</span></span>
+<span id="cb21-2"><a href="time-series.html#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(fx1, <span class="at">series=</span><span class="st">&quot;Simple Exponential Smoothing&quot;</span>, <span class="at">PI=</span>F) <span class="sc">+</span></span>
+<span id="cb21-3"><a href="time-series.html#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autolayer</span>(fx2, <span class="at">series=</span><span class="st">&quot;Holt Winters&quot;</span>, <span class="at">PI=</span>F) <span class="sc">+</span> </span>
+<span id="cb21-4"><a href="time-series.html#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Invoiced&quot;</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">&quot;Year&quot;</span>)</span></code></pre></div>
 <p><img src="series_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 </div>
 <div id="statistical-model" class="section level2 hasAnchor" number="3.3">
 <h2><span class="header-section-number">3.3</span> Statistical model<a href="time-series.html#statistical-model" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>One of the drawbacks of the forecasting methods we have used so far is that there is no uncertainty quantification. Fortunately, there is an easy way to formulate the exponential smoothing models we have been working with as a statistical model. For more detail, <a href="https://otexts.com/fpp2/ets.html">see this excellent resource</a>.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="time-series.html#cb21-1" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">=</span> <span class="fu">ets</span>(y_ts, <span class="at">model=</span><span class="st">&quot;ZZZ&quot;</span>, <span class="at">damped=</span><span class="cn">NULL</span>, <span class="at">alpha=</span><span class="cn">NULL</span>, <span class="at">beta=</span><span class="cn">NULL</span>,</span>
-<span id="cb21-2"><a href="time-series.html#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">gamma=</span><span class="cn">NULL</span>, <span class="at">phi=</span><span class="cn">NULL</span>, <span class="at">lambda=</span><span class="cn">NULL</span>, <span class="at">biasadj=</span><span class="cn">FALSE</span>,</span>
-<span id="cb21-3"><a href="time-series.html#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">additive.only=</span><span class="cn">FALSE</span>, <span class="at">restrict=</span><span class="cn">TRUE</span>,</span>
-<span id="cb21-4"><a href="time-series.html#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">allow.multiplicative.trend=</span><span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="time-series.html#cb22-1" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">=</span> <span class="fu">ets</span>(y_ts, <span class="at">model=</span><span class="st">&quot;ZZZ&quot;</span>, <span class="at">damped=</span><span class="cn">NULL</span>, <span class="at">alpha=</span><span class="cn">NULL</span>, <span class="at">beta=</span><span class="cn">NULL</span>,</span>
+<span id="cb22-2"><a href="time-series.html#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">gamma=</span><span class="cn">NULL</span>, <span class="at">phi=</span><span class="cn">NULL</span>, <span class="at">lambda=</span><span class="cn">NULL</span>, <span class="at">biasadj=</span><span class="cn">FALSE</span>,</span>
+<span id="cb22-3"><a href="time-series.html#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">additive.only=</span><span class="cn">FALSE</span>, <span class="at">restrict=</span><span class="cn">TRUE</span>,</span>
+<span id="cb22-4"><a href="time-series.html#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">allow.multiplicative.trend=</span><span class="cn">FALSE</span>)</span></code></pre></div>
 <p>Once the model is fit, we can see which model was chosen using the <code>summary</code> function. We label each state space model as ETS( <span class="math inline">\(\cdot, \cdot, \cdot\)</span>), for (Error, Trend, Seasonal). The possibilities for each component are: Error = {<span class="math inline">\(A,M\)</span>}, Trend = {<span class="math inline">\(N,A,A_d\)</span>}, and Seasonal = {<span class="math inline">\(N,A,M\)</span>}. Here, <span class="math inline">\(M\)</span> denotes multiply and <span class="math inline">\(A\)</span> denotes add. In an <span class="math inline">\(M\)</span> type model, the component multiplies (i.e., a season in which invoices are 1.1 times as large).</p>
 <pre><code>## ETS(A,A,N) 
 ## 
@@ -291,7 +291,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##                     ME     RMSE     MAE       MPE     MAPE     MASE        ACF1
 ## Training set -2.913354 35.50392 28.2599 -29.14288 55.95159 0.552141 -0.03601155</code></pre>
 <p>There is also a straightforward way to forecast using the fitted model.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="time-series.html#cb23-1" aria-hidden="true" tabindex="-1"></a>mod <span class="sc">%&gt;%</span> <span class="fu">forecast</span>(<span class="at">h=</span><span class="dv">15</span>) <span class="sc">%&gt;%</span> <span class="fu">autoplot</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="time-series.html#cb24-1" aria-hidden="true" tabindex="-1"></a>mod <span class="sc">%&gt;%</span> <span class="fu">forecast</span>(<span class="at">h=</span><span class="dv">15</span>) <span class="sc">%&gt;%</span> <span class="fu">autoplot</span>()</span></code></pre></div>
 <p><img src="series_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 <p><strong>To do</strong></p>
 <ol style="list-style-type: decimal">
