@@ -23,7 +23,7 @@
 <meta name="author" content="David Reynolds" />
 
 
-<meta name="date" content="2023-01-20" />
+<meta name="date" content="2023-01-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -145,14 +145,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html"><i class="fa fa-check"></i><b>1</b> Exploratory Data Analysis</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#including-plots"><i class="fa fa-check"></i><b>1.1</b> Including Plots</a></li>
+<li class="chapter" data-level="1.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#from-base-r-to-ggplot2"><i class="fa fa-check"></i><b>1.1</b> From base R to ggplot2</a></li>
+<li class="chapter" data-level="1.2" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#linear-regression"><i class="fa fa-check"></i><b>1.2</b> Linear regression</a></li>
+<li class="chapter" data-level="1.3" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#assignment-1"><i class="fa fa-check"></i><b>1.3</b> Assignment 1</a></li>
+<li class="chapter" data-level="1.4" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#traditional-data-frames"><i class="fa fa-check"></i><b>1.4</b> Traditional data frames</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="other-topics.html"><a href="other-topics.html"><i class="fa fa-check"></i><b>2</b> Other Topics</a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="other-topics.html"><a href="other-topics.html#data-processing"><i class="fa fa-check"></i><b>2.1</b> Data Processing</a>
 <ul>
 <li class="chapter" data-level="2.1.1" data-path="other-topics.html"><a href="other-topics.html#cleaning-up-strings"><i class="fa fa-check"></i><b>2.1.1</b> Cleaning up strings</a></li>
-<li class="chapter" data-level="2.1.2" data-path="other-topics.html"><a href="other-topics.html#assignment-1"><i class="fa fa-check"></i><b>2.1.2</b> Assignment 1</a></li>
+<li class="chapter" data-level="2.1.2" data-path="other-topics.html"><a href="other-topics.html#assignment-1-1"><i class="fa fa-check"></i><b>2.1.2</b> Assignment 1</a></li>
 </ul></li>
 <li class="chapter" data-level="2.2" data-path="other-topics.html"><a href="other-topics.html#data-manipulation"><i class="fa fa-check"></i><b>2.2</b> Data Manipulation</a>
 <ul>
@@ -189,6 +192,36 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="exploratory-data-analysis" class="section level1 hasAnchor" number="1">
 <h1><span class="header-section-number">Chapter 1</span> Exploratory Data Analysis<a href="exploratory-data-analysis.html#exploratory-data-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="from-base-r-to-ggplot2" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> From base R to ggplot2<a href="exploratory-data-analysis.html#from-base-r-to-ggplot2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>R has several systems for making graphs, but ggplot2 is one of the most versatile. Using ggplot2 requires that you have loaded the <code>tidyverse</code> package.</p>
+<p>I’ll use the dataset <code>msleep</code> to show some key concepts. Let’s use our first graph to answer a question: what is the relationship between REM sleep and total sleep? These are both numerical variables, so a good plot choice is a scatterplot. Using R’s built in plot function:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="exploratory-data-analysis.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(msleep<span class="sc">$</span>sleep_total, msleep<span class="sc">$</span>sleep_rem)</span></code></pre></div>
+<p>How can we do the same thing in ggplot2?</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="exploratory-data-analysis.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="sc">&lt;</span>DATA<span class="sc">&gt;</span>) <span class="sc">+</span> </span>
+<span id="cb3-2"><a href="exploratory-data-analysis.html#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="er">&lt;</span>GEOM_FUNCTION<span class="sc">&gt;</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="sc">&lt;</span>MAPPINGS<span class="sc">&gt;</span>))</span></code></pre></div>
+<p>Let’s go through each of these things. First, DATA is the name of your data frame (or tibble). Second, GEOM_FUNCTION specifies the type of plot; ggplot2 comes with many geom functions that each add a different type of layer to a plot. Each geom function in ggplot2 takes a MAPPING argument. This defines how variables in your dataset are mapped to visual properties. The mapping argument is always paired with <code>aes()</code>, and the x and y arguments of <code>aes()</code> specify which variables to map to the x and y axes; ggplot2 looks for the mapped variables in the data argument, in this case, msleep.</p>
+<p>For a scatterplot, the GEOM_FUNCTION is <code>geom_point</code>. So, we can generate our scatterplot as,</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="exploratory-data-analysis.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> msleep) <span class="sc">+</span> </span>
+<span id="cb4-2"><a href="exploratory-data-analysis.html#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> sleep_total, <span class="at">y =</span> sleep_rem))</span></code></pre></div>
+<pre><code>## Warning: Removed 22 rows containing missing values
+## (`geom_point()`).</code></pre>
+<p><img src="series_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>We might ask whether this relationship depends on the mammal’s diet. We could approach this question by color coding the points based on what the mammal eats, as specified by the <code>vore</code> variable.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="exploratory-data-analysis.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> msleep) <span class="sc">+</span> </span>
+<span id="cb6-2"><a href="exploratory-data-analysis.html#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> sleep_total, <span class="at">y =</span> sleep_rem, <span class="at">color =</span> vore))</span></code></pre></div>
+<p><img src="series_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>We might further ask whether this relationship depends on the mammal’s diet and body size. We could approach this question by further size coding the points based on size, as specified by the <code>bodywt</code> variable.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="exploratory-data-analysis.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">filter</span>(msleep, bodywt <span class="sc">&lt;=</span> <span class="dv">1000</span>)) <span class="sc">+</span> </span>
+<span id="cb7-2"><a href="exploratory-data-analysis.html#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> sleep_total, <span class="at">y =</span> sleep_rem, <span class="at">color =</span> vore, <span class="at">size =</span> (bodywt)))</span></code></pre></div>
+<p><img src="series_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>It looks like</p>
+</div>
+<div id="linear-regression" class="section level2 hasAnchor" number="1.2">
+<h2><span class="header-section-number">1.2</span> Linear regression<a href="exploratory-data-analysis.html#linear-regression" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="assignment-1" class="section level2 hasAnchor" number="1.3">
+<h2><span class="header-section-number">1.3</span> Assignment 1<a href="exploratory-data-analysis.html#assignment-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
 <p>When you click the <strong>Knit</strong> button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
 <pre><code>##      speed           dist       
@@ -198,8 +231,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  Mean   :15.4   Mean   : 42.98  
 ##  3rd Qu.:19.0   3rd Qu.: 56.00  
 ##  Max.   :25.0   Max.   :120.00</code></pre>
-<div id="including-plots" class="section level2 hasAnchor" number="1.1">
-<h2><span class="header-section-number">1.1</span> Including Plots<a href="exploratory-data-analysis.html#including-plots" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="traditional-data-frames" class="section level2 hasAnchor" number="1.4">
+<h2><span class="header-section-number">1.4</span> Traditional data frames<a href="exploratory-data-analysis.html#traditional-data-frames" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>You can also embed plots, for example:</p>
 <p><img src="series_files/figure-html/pressure-1.png" width="672" /></p>
 <p>Note that the <code>echo = FALSE</code> parameter was added to the code chunk to prevent printing of the R code that generated the plot.</p>

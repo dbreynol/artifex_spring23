@@ -1,14 +1,62 @@
 # Exploratory Data Analysis
 
+## From base R to ggplot2
+
+R has several systems for making graphs, but ggplot2 is one of the most versatile. Using ggplot2 requires that you have loaded the <code>tidyverse</code> package.
+
+I'll use the dataset <code>msleep</code> to show some key concepts. Let's use our first graph to answer a question: what is the relationship between REM sleep and total sleep? These are both numerical variables, so a good plot choice is a scatterplot. Using R's built in plot function:
+
+```{r, echo=TRUE, eval=FALSE}
+plot(msleep$sleep_total, msleep$sleep_rem)
+```
+
+How can we do the same thing in ggplot2?
+
+```{r, echo=TRUE, eval=FALSE}
+ggplot(data = <DATA>) + 
+  <GEOM_FUNCTION>(mapping = aes(<MAPPINGS>))
+```
+
+Let's go through each of these things. First, DATA is the name of your data frame (or tibble). Second, GEOM_FUNCTION specifies the type of plot; ggplot2 comes with many geom functions that each add a different type of layer to a plot. Each geom function in ggplot2 takes a MAPPING argument. This defines how variables in your dataset are mapped to visual properties. The mapping argument is always paired with <code>aes()</code>, and the x and y arguments of <code>aes()</code> specify which variables to map to the x and y axes; ggplot2 looks for the mapped variables in the data argument, in this case, msleep.
+
+For a scatterplot, the GEOM_FUNCTION is <code>geom_point</code>. So, we can generate our scatterplot as,
+
+```{r, echo=TRUE}
+ggplot(data = msleep) + 
+  geom_point(mapping = aes(x = sleep_total, y = sleep_rem))
+```
+
+We might ask whether this relationship depends on the mammal's diet. We could approach this question by color coding the points based on what the mammal eats, as specified by the <code>vore</code> variable.
+
+```{r, echo=TRUE, warning=FALSE}
+ggplot(data = msleep) + 
+  geom_point(mapping = aes(x = sleep_total, y = sleep_rem, color = vore))
+```
+
+We might further ask whether this relationship depends on the mammal's diet and body size. We could approach this question by further size coding the points based on size, as specified by the <code>bodywt</code> variable.
+
+```{r, echo=TRUE, warning=FALSE}
+ggplot(data = filter(msleep, bodywt <= 1000)) + 
+  geom_point(mapping = aes(x = sleep_total, y = sleep_rem, color = vore, size = (bodywt)))
+```
+
+It looks like 
+
+## Linear regression
+
+## Assignment 1
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 ```{r cars}
+# USArrests for the spatial piece
+# msleep and storms
+
 summary(cars)
 ```
 
-## Including Plots
+## Traditional data frames
 
 You can also embed plots, for example:
 

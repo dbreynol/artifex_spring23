@@ -1,10 +1,13 @@
-tab:unnamed-chunk-3
+tab:unnamed-chunk-8
 exploratory-data-analysis
-including-plots
+from-base-r-to-ggplot2
+linear-regression
+assignment-1
+traditional-data-frames
 other-topics
 data-processing
 cleaning-up-strings
-assignment-1
+assignment-1-1
 data-manipulation
 filter
 arrange
