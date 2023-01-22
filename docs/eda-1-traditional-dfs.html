@@ -222,6 +222,53 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="linear-regression" class="section level2 hasAnchor" number="1.2">
 <h2><span class="header-section-number">1.2</span> Linear regression<a href="eda-1-traditional-dfs.html#linear-regression" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We can take our EDA one step further by fitting a linear regression to the data. In the last section, we noticed that there is a linear relationship between rem sleep and total sleep for herbivores and carnivores. To learn more about this relationship, we can subset our data to just these two <code>vore</code> types and fit a linear regression model to the data. This model will have the form:</p>
+<p><span class="math display">\[\begin{equation}
+\text{sleep_rem} = \hat{\beta_0} + \hat{\beta_1} \times \text{sleep_total}.
+\end{equation}\]</span></p>
+<p>Before we fit the model, let us subset the data to just the relevant observations.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="eda-1-traditional-dfs.html#cb8-1" aria-hidden="true" tabindex="-1"></a>mod_df <span class="ot">=</span> <span class="fu">filter</span>(msleep, vore <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;carni&quot;</span>, <span class="st">&quot;herbi&quot;</span>))</span>
+<span id="cb8-2"><a href="eda-1-traditional-dfs.html#cb8-2" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">=</span> <span class="fu">lm</span>(sleep_rem <span class="sc">~</span> sleep_total, <span class="at">data =</span> mod_df)</span>
+<span id="cb8-3"><a href="eda-1-traditional-dfs.html#cb8-3" aria-hidden="true" tabindex="-1"></a>mod <span class="sc">%&gt;%</span> <span class="fu">tidy</span>() <span class="sc">%&gt;%</span> <span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">-0.4975947</td>
+<td align="right">0.2831096</td>
+<td align="right">-1.757605</td>
+<td align="right">0.0883788</td>
+</tr>
+<tr class="even">
+<td align="left">sleep_total</td>
+<td align="right">0.2298045</td>
+<td align="right">0.0272162</td>
+<td align="right">8.443680</td>
+<td align="right">0.0000000</td>
+</tr>
+</tbody>
+</table>
+<p>How would you interpret these estimates?</p>
+<p>We could visualize this relationship by adding another GEOM_FUNCTION.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="eda-1-traditional-dfs.html#cb9-1" aria-hidden="true" tabindex="-1"></a>mod_df  <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> sleep_total, <span class="at">y =</span> sleep_rem)) <span class="sc">+</span> </span>
+<span id="cb9-2"><a href="eda-1-traditional-dfs.html#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb9-3"><a href="eda-1-traditional-dfs.html#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">formula =</span> y <span class="sc">~</span> x, <span class="at">method =</span> lm)</span></code></pre></div>
+<p><img src="series_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>Another question we could address is whether this relationship is different for herbivores and carnivores. This can easily be addressed visually by making the <code>linetype</code> depend on <code>vore</code>.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="eda-1-traditional-dfs.html#cb10-1" aria-hidden="true" tabindex="-1"></a>mod_df  <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> sleep_total, <span class="at">y =</span> sleep_rem)) <span class="sc">+</span> </span>
+<span id="cb10-2"><a href="eda-1-traditional-dfs.html#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> vore)) <span class="sc">+</span> </span>
+<span id="cb10-3"><a href="eda-1-traditional-dfs.html#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">formula =</span> y <span class="sc">~</span> x, <span class="at">method =</span> lm, <span class="fu">aes</span>(<span class="at">linetype =</span> vore, <span class="at">color =</span> vore)) <span class="sc">+</span> </span>
+<span id="cb10-4"><a href="eda-1-traditional-dfs.html#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<p><img src="series_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 </div>
 <div id="assignment-1" class="section level2 hasAnchor" number="1.3">
 <h2><span class="header-section-number">1.3</span> Assignment 1<a href="eda-1-traditional-dfs.html#assignment-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>

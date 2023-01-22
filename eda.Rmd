@@ -54,6 +54,38 @@ It looks like the bigger mammals tend to get little sleep and the smaller animal
 
 ## Linear regression
 
+We can take our EDA one step further by fitting a linear regression to the data. In the last section, we noticed that there is a linear relationship between rem sleep and total sleep for herbivores and carnivores. To learn more about this relationship, we can subset our data to just these two <code>vore</code> types and fit a linear regression model to the data. This model will have the form:
+
+\begin{equation}
+\text{sleep_rem} = \hat{\beta_0} + \hat{\beta_1} \times \text{sleep_total}.
+\end{equation}
+
+Before we fit the model, let us subset the data to just the relevant observations.
+
+```{r, echo=TRUE}
+mod_df = filter(msleep, vore %in% c("carni", "herbi"))
+mod = lm(sleep_rem ~ sleep_total, data = mod_df)
+mod %>% tidy() %>% kable()
+```
+
+How would you interpret these estimates?
+
+We could visualize this relationship by adding another GEOM_FUNCTION.
+
+```{r, echo=TRUE, warning=FALSE}
+mod_df  %>% ggplot(aes(x = sleep_total, y = sleep_rem)) + 
+  geom_point() + 
+  geom_smooth(formula = y ~ x, method = lm)
+```
+
+Another question we could address is whether this relationship is different for herbivores and carnivores. This can easily be addressed visually by making the <code>linetype</code> depend on <code>vore</code>.
+
+```{r, echo=TRUE, warning=FALSE}
+mod_df  %>% ggplot(aes(x = sleep_total, y = sleep_rem)) + 
+  geom_point(aes(color = vore)) + 
+  geom_smooth(formula = y ~ x, method = lm, aes(linetype = vore, color = vore)) + 
+  theme_minimal()
+```
 
 
 ## Assignment 1

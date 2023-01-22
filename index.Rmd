@@ -15,6 +15,7 @@ description: "(Partial) course materials for Artifex, Fall 2022."
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = F)
 library(tidyverse)
+library(broom)
 library(lubridate)
 library(knitr)
 library(forecast)
