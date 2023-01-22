@@ -1,9 +1,8 @@
-tab:unnamed-chunk-8
-exploratory-data-analysis
+tab:unnamed-chunk-9
+eda-1-traditional-dfs
 from-base-r-to-ggplot2
 linear-regression
 assignment-1
-traditional-data-frames
 other-topics
 data-processing
 cleaning-up-strings

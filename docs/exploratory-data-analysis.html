@@ -23,7 +23,7 @@
 <meta name="author" content="David Reynolds" />
 
 
-<meta name="date" content="2023-01-21" />
+<meta name="date" content="2023-01-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -204,18 +204,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>For a scatterplot, the GEOM_FUNCTION is <code>geom_point</code>. So, we can generate our scatterplot as,</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="exploratory-data-analysis.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> msleep) <span class="sc">+</span> </span>
 <span id="cb4-2"><a href="exploratory-data-analysis.html#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> sleep_total, <span class="at">y =</span> sleep_rem))</span></code></pre></div>
-<pre><code>## Warning: Removed 22 rows containing missing values
-## (`geom_point()`).</code></pre>
 <p><img src="series_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p>We might ask whether this relationship depends on the mammal’s diet. We could approach this question by color coding the points based on what the mammal eats, as specified by the <code>vore</code> variable.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="exploratory-data-analysis.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> msleep) <span class="sc">+</span> </span>
-<span id="cb6-2"><a href="exploratory-data-analysis.html#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> sleep_total, <span class="at">y =</span> sleep_rem, <span class="at">color =</span> vore))</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="exploratory-data-analysis.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> msleep) <span class="sc">+</span> </span>
+<span id="cb5-2"><a href="exploratory-data-analysis.html#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> sleep_total, <span class="at">y =</span> sleep_rem, <span class="at">color =</span> vore))</span></code></pre></div>
 <p><img src="series_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>Another way, particularly useful for categorical variables, is to split your plot into facets, subplots that each display one subset of the data. To facet your plot by a single variable, use <code>facet_wrap()</code>. The first argument of <code>facet_wrap()</code> should be a formula, which you create with <code>~</code> followed by a variable name (here “formula” is the name of a data structure in R, not a synonym for “equation”). The variable that you pass to <code>facet_wrap()</code> should be discrete.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="exploratory-data-analysis.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> msleep) <span class="sc">+</span> </span>
+<span id="cb6-2"><a href="exploratory-data-analysis.html#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> sleep_total, <span class="at">y =</span> sleep_rem)) <span class="sc">+</span> </span>
+<span id="cb6-3"><a href="exploratory-data-analysis.html#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>( <span class="sc">~</span> vore, <span class="at">nrow =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="series_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>From these plots, it seems that there is a linear relationship between total sleep and REM sleep for herbivores and carnivores but not necessarily for the other mammal types.</p>
 <p>We might further ask whether this relationship depends on the mammal’s diet and body size. We could approach this question by further size coding the points based on size, as specified by the <code>bodywt</code> variable.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="exploratory-data-analysis.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">filter</span>(msleep, bodywt <span class="sc">&lt;=</span> <span class="dv">1000</span>)) <span class="sc">+</span> </span>
 <span id="cb7-2"><a href="exploratory-data-analysis.html#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> sleep_total, <span class="at">y =</span> sleep_rem, <span class="at">color =</span> vore, <span class="at">size =</span> (bodywt)))</span></code></pre></div>
-<p><img src="series_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<p>It looks like</p>
+<p><img src="series_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>It looks like the bigger mammals tend to get little sleep and the smaller animals get more sleep, on average.</p>
 </div>
 <div id="linear-regression" class="section level2 hasAnchor" number="1.2">
 <h2><span class="header-section-number">1.2</span> Linear regression<a href="exploratory-data-analysis.html#linear-regression" class="anchor-section" aria-label="Anchor link to header"></a></h2>

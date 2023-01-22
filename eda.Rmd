@@ -1,4 +1,4 @@
-# Exploratory Data Analysis
+# EDA 1 (traditional df's)
 
 ## From base R to ggplot2
 
@@ -21,7 +21,7 @@ Let's go through each of these things. First, DATA is the name of your data fram
 
 For a scatterplot, the GEOM_FUNCTION is <code>geom_point</code>. So, we can generate our scatterplot as,
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, warning=FALSE}
 ggplot(data = msleep) + 
   geom_point(mapping = aes(x = sleep_total, y = sleep_rem))
 ```
@@ -33,6 +33,16 @@ ggplot(data = msleep) +
   geom_point(mapping = aes(x = sleep_total, y = sleep_rem, color = vore))
 ```
 
+Another way, particularly useful for categorical variables, is to split your plot into facets, subplots that each display one subset of the data. To facet your plot by a single variable, use <code>facet_wrap()</code>. The first argument of <code>facet_wrap()</code> should be a formula, which you create with <code>~</code> followed by a variable name (here “formula” is the name of a data structure in R, not a synonym for “equation”). The variable that you pass to <code>facet_wrap()</code> should be discrete.
+
+```{r, echo=TRUE, warning=FALSE}
+ggplot(data = msleep) + 
+  geom_point(mapping = aes(x = sleep_total, y = sleep_rem)) + 
+  facet_wrap( ~ vore, nrow = 2)
+```
+
+From these plots, it seems that there is a linear relationship between total sleep and REM sleep for herbivores and carnivores but not necessarily for the other mammal types. 
+
 We might further ask whether this relationship depends on the mammal's diet and body size. We could approach this question by further size coding the points based on size, as specified by the <code>bodywt</code> variable.
 
 ```{r, echo=TRUE, warning=FALSE}
@@ -40,11 +50,14 @@ ggplot(data = filter(msleep, bodywt <= 1000)) +
   geom_point(mapping = aes(x = sleep_total, y = sleep_rem, color = vore, size = (bodywt)))
 ```
 
-It looks like 
+It looks like the bigger mammals tend to get little sleep and the smaller animals get more sleep, on average.
 
 ## Linear regression
 
+
+
 ## Assignment 1
+
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
@@ -55,13 +68,3 @@ When you click the **Knit** button a document will be generated that includes bo
 
 summary(cars)
 ```
-
-## Traditional data frames
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

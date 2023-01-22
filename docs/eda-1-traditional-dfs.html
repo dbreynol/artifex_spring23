@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Artifex - Spring 2023</title>
+  <title>Chapter 1 EDA 1 (traditional df’s) | Artifex - Spring 2023</title>
   <meta name="description" content="(Partial) course materials for Artifex, Fall 2022." />
   <meta name="generator" content="bookdown 0.32 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Artifex - Spring 2023" />
+  <meta property="og:title" content="Chapter 1 EDA 1 (traditional df’s) | Artifex - Spring 2023" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="(Partial) course materials for Artifex, Fall 2022." />
   <meta name="github-repo" content="openscapes/series" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Artifex - Spring 2023" />
+  <meta name="twitter:title" content="Chapter 1 EDA 1 (traditional df’s) | Artifex - Spring 2023" />
   
   <meta name="twitter:description" content="(Partial) course materials for Artifex, Fall 2022." />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-<link rel="next" href="eda-1-traditional-dfs.html"/>
+<link rel="prev" href="index.html"/>
+<link rel="next" href="other-topics.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -189,28 +189,51 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Artifex - Spring 2023</h1>
-<p class="author"><em>David Reynolds</em></p>
-<p class="date"><em>2023-01-22</em></p>
+<div id="eda-1-traditional-dfs" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">Chapter 1</span> EDA 1 (traditional df’s)<a href="eda-1-traditional-dfs.html#eda-1-traditional-dfs" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="from-base-r-to-ggplot2" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> From base R to ggplot2<a href="eda-1-traditional-dfs.html#from-base-r-to-ggplot2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>R has several systems for making graphs, but ggplot2 is one of the most versatile. Using ggplot2 requires that you have loaded the <code>tidyverse</code> package.</p>
+<p>I’ll use the dataset <code>msleep</code> to show some key concepts. Let’s use our first graph to answer a question: what is the relationship between REM sleep and total sleep? These are both numerical variables, so a good plot choice is a scatterplot. Using R’s built in plot function:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="eda-1-traditional-dfs.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(msleep<span class="sc">$</span>sleep_total, msleep<span class="sc">$</span>sleep_rem)</span></code></pre></div>
+<p>How can we do the same thing in ggplot2?</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="eda-1-traditional-dfs.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="sc">&lt;</span>DATA<span class="sc">&gt;</span>) <span class="sc">+</span> </span>
+<span id="cb3-2"><a href="eda-1-traditional-dfs.html#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="er">&lt;</span>GEOM_FUNCTION<span class="sc">&gt;</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="sc">&lt;</span>MAPPINGS<span class="sc">&gt;</span>))</span></code></pre></div>
+<p>Let’s go through each of these things. First, DATA is the name of your data frame (or tibble). Second, GEOM_FUNCTION specifies the type of plot; ggplot2 comes with many geom functions that each add a different type of layer to a plot. Each geom function in ggplot2 takes a MAPPING argument. This defines how variables in your dataset are mapped to visual properties. The mapping argument is always paired with <code>aes()</code>, and the x and y arguments of <code>aes()</code> specify which variables to map to the x and y axes; ggplot2 looks for the mapped variables in the data argument, in this case, msleep.</p>
+<p>For a scatterplot, the GEOM_FUNCTION is <code>geom_point</code>. So, we can generate our scatterplot as,</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="eda-1-traditional-dfs.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> msleep) <span class="sc">+</span> </span>
+<span id="cb4-2"><a href="eda-1-traditional-dfs.html#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> sleep_total, <span class="at">y =</span> sleep_rem))</span></code></pre></div>
+<p><img src="series_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>We might ask whether this relationship depends on the mammal’s diet. We could approach this question by color coding the points based on what the mammal eats, as specified by the <code>vore</code> variable.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="eda-1-traditional-dfs.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> msleep) <span class="sc">+</span> </span>
+<span id="cb5-2"><a href="eda-1-traditional-dfs.html#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> sleep_total, <span class="at">y =</span> sleep_rem, <span class="at">color =</span> vore))</span></code></pre></div>
+<p><img src="series_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>Another way, particularly useful for categorical variables, is to split your plot into facets, subplots that each display one subset of the data. To facet your plot by a single variable, use <code>facet_wrap()</code>. The first argument of <code>facet_wrap()</code> should be a formula, which you create with <code>~</code> followed by a variable name (here “formula” is the name of a data structure in R, not a synonym for “equation”). The variable that you pass to <code>facet_wrap()</code> should be discrete.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="eda-1-traditional-dfs.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> msleep) <span class="sc">+</span> </span>
+<span id="cb6-2"><a href="eda-1-traditional-dfs.html#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> sleep_total, <span class="at">y =</span> sleep_rem)) <span class="sc">+</span> </span>
+<span id="cb6-3"><a href="eda-1-traditional-dfs.html#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>( <span class="sc">~</span> vore, <span class="at">nrow =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="series_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>From these plots, it seems that there is a linear relationship between total sleep and REM sleep for herbivores and carnivores but not necessarily for the other mammal types.</p>
+<p>We might further ask whether this relationship depends on the mammal’s diet and body size. We could approach this question by further size coding the points based on size, as specified by the <code>bodywt</code> variable.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="eda-1-traditional-dfs.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">filter</span>(msleep, bodywt <span class="sc">&lt;=</span> <span class="dv">1000</span>)) <span class="sc">+</span> </span>
+<span id="cb7-2"><a href="eda-1-traditional-dfs.html#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> sleep_total, <span class="at">y =</span> sleep_rem, <span class="at">color =</span> vore, <span class="at">size =</span> (bodywt)))</span></code></pre></div>
+<p><img src="series_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>It looks like the bigger mammals tend to get little sleep and the smaller animals get more sleep, on average.</p>
 </div>
-<div id="course-overview---artifex-spring-2023" class="section level1 unnumbered hasAnchor">
-<h1>Course Overview - Artifex Spring 2023<a href="index.html#course-overview---artifex-spring-2023" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Welcome (back) to Artifex! The primary objective of this course/ club is to equip its members with the essential skills of a data scientist. This is primarily achieved by working through a real world business analytics project with an industry partner. The course delivery is a mix of lectures and project-based learning. The lectures will all be tailored to our project and will be more prevalent in the beginning of the course. All lecture materials will be posted on this website. Further details on the partner project will be posted on Canvas. This class also has a significant club component, which mostly means that there is an emphasis on collaboration and getting to know one another.</p>
-<div id="prerequisites-and-preparations" class="section level2 unnumbered hasAnchor">
-<h2>Prerequisites and Preparations<a href="index.html#prerequisites-and-preparations" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<ul>
-<li>You should have some <strong>basic knowledge</strong> of R, and be familiar with the topics covered in the <a href="https://cengel.github.io/R-intro/">Chapters 1 and 2 here</a>.</li>
-<li>Have a recent version of <a href="https://cran.r-project.org/">R</a> and <a href="https://www.rstudio.com/">RStudio</a> installed.</li>
-<li>Install and load the <code>tidyverse</code> package.</li>
-</ul>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;tidyverse&quot;</span>)  </span>
-<span id="cb1-2"><a href="index.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
+<div id="linear-regression" class="section level2 hasAnchor" number="1.2">
+<h2><span class="header-section-number">1.2</span> Linear regression<a href="eda-1-traditional-dfs.html#linear-regression" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 </div>
-<div id="references" class="section level2 unnumbered hasAnchor">
-<h2>References<a href="index.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Grolemund, G &amp; Wickham, H (2017): R for Data Science <a href="http://r4ds.had.co.nz" class="uri">http://r4ds.had.co.nz</a></p>
-<p>Hyndman, R &amp; Athanasopoulos, G (2022): Forecasting: Principles and Practice <a href="https://otexts.com/fpp2/index.html" class="uri">https://otexts.com/fpp2/index.html</a></p>
+<div id="assignment-1" class="section level2 hasAnchor" number="1.3">
+<h2><span class="header-section-number">1.3</span> Assignment 1<a href="eda-1-traditional-dfs.html#assignment-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
+<p>When you click the <strong>Knit</strong> button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
+<pre><code>##      speed           dist       
+##  Min.   : 4.0   Min.   :  2.00  
+##  1st Qu.:12.0   1st Qu.: 26.00  
+##  Median :15.0   Median : 36.00  
+##  Mean   :15.4   Mean   : 42.98  
+##  3rd Qu.:19.0   3rd Qu.: 56.00  
+##  Max.   :25.0   Max.   :120.00</code></pre>
 
 </div>
 </div>
@@ -219,8 +242,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-
-<a href="eda-1-traditional-dfs.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="other-topics.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -251,7 +274,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/dbreynol/artifex_fall2022/edit/master/index.Rmd",
+"link": "https://github.com/dbreynol/artifex_fall2022/edit/master/eda.Rmd",
 "text": "Edit"
 },
 "history": {
