@@ -274,8 +274,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">1.3</span> Assignment 1<a href="eda-1-traditional-dfs.html#assignment-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>For this assignment, you will investigate the relationship between <code>sleep_rem</code> (explanatory variable) and the brain’s proportion of total bodyweight (i.e., <code>brainwt/bodywt</code> - this is the response variable). To do this, do the following:</p>
 <ol style="list-style-type: decimal">
-<li><p>Modify your data frame to include the response variable. Name this variable <code>brain_proportion</code>.</p></li>
-<li><p>Remove any observations that have an NA value for either the response or explanatory variable. Hint: use <code>filter</code> and <code>!is.na()</code>.</p></li>
+<li><p>Modify your data frame to include the response variable. Name this variable <code>brain_proportion</code>. Hint: use the <code>mutate</code> function.</p></li>
+<li><p>Remove any observations that have an NA value for either the response or explanatory variable. Hint: use the <code>drop_na</code> function.</p></li>
 <li><p>Visualize the relationship between the explanatory and response variable. Does the relationship change based on <code>vore</code>? If so, how?</p></li>
 <li><p>Remove any <code>vore</code> types that have fewer than 5 observations and again visualize the relationship between the explanatory and response variable. Is the relationship different between <code>vore</code> types? Are there any outliers?</p></li>
 </ol>

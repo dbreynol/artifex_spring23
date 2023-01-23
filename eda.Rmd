@@ -91,9 +91,9 @@ mod_df  %>% ggplot(aes(x = sleep_total, y = sleep_rem)) +
 
 For this assignment, you will investigate the relationship between <code>sleep_rem</code> (explanatory variable) and the brain's proportion of total bodyweight (i.e., <code>brainwt/bodywt</code> - this is the response variable). To do this, do the following:
 
-1. Modify your data frame to include the response variable. Name this variable <code>brain_proportion</code>.
+1. Modify your data frame to include the response variable. Name this variable <code>brain_proportion</code>. Hint: use the <code>mutate</code> function.
 
-2. Remove any observations that have an NA value for either the response or explanatory variable. Hint: use <code>filter</code> and <code>!is.na()</code>.
+2. Remove any observations that have an NA value for either the response or explanatory variable. Hint: use the <code>drop_na</code> function. 
 
 3. Visualize the relationship between the explanatory and response variable. Does the relationship change based on <code>vore</code>? If so, how?
 
