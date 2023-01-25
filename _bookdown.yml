@@ -5,6 +5,7 @@ language:
 rmd_files: [
   "index.Rmd",
   "eda.Rmd",
+  "eda_ts.Rmd",
   "write.Rmd"]
 delete_merged_file: true 
 output_dir: "docs"

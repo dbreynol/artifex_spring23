@@ -98,3 +98,15 @@ For this assignment, you will investigate the relationship between <code>sleep_r
 3. Visualize the relationship between the explanatory and response variable. Does the relationship change based on <code>vore</code>? If so, how?
 
 4. Remove any <code>vore</code> types that have fewer than 5 observations and again visualize the relationship between the explanatory and response variable. Is the relationship different between <code>vore</code> types? Are there any outliers? 
+
+```{r echo=T, eval=FALSE, warning=F}
+msleep %>% 
+  mutate(brain_proportion= brainwt/bodywt) %>% 
+  group_by(vore) %>% 
+  mutate(n = n()) %>% 
+  filter(n > 5) %>% 
+  drop_na(brain_proportion, sleep_rem) %>%  
+  ggplot(aes(x = sleep_rem, y = brain_proportion, color = vore)) + geom_point() + 
+  geom_smooth(aes(linetyp = vore), method = lm)
+```
+

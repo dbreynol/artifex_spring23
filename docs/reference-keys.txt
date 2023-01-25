@@ -1,8 +1,11 @@
-tab:unnamed-chunk-12
+tab:unnamed-chunk-17
 eda-1-traditional-dfs
 from-base-r-to-ggplot2
 linear-regression
 assignment-1
+eda-2---time-series
+coercing-time-variables-to-dates
+assignment-2
 other-topics
 data-processing
 cleaning-up-strings
@@ -13,7 +16,7 @@ arrange
 select
 mutate
 group-by-summarise
-assignment-2
+assignment-2-1
 time-series
 decomposition
 forecasting
