@@ -23,7 +23,7 @@
 <meta name="author" content="David Reynolds" />
 
 
-<meta name="date" content="2023-01-25" />
+<meta name="date" content="2023-01-30" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,6 +52,22 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.1.1/leaflet-providers-plugin.js"></script>
+<link href="libs/HomeButton-0.0.1/home-button.css" rel="stylesheet" />
+<script src="libs/HomeButton-0.0.1/home-button.js"></script>
+<script src="libs/HomeButton-0.0.1/easy-button-src.min.js"></script>
+<script src="libs/clipboard-0.0.1/setClipboardText.js"></script>
+<link href="libs/mapviewCSS-0.0.1/mapview-popup.css" rel="stylesheet" />
+<link href="libs/mapviewCSS-0.0.1/mapview.css" rel="stylesheet" />
 
 
 <style type="text/css">
@@ -154,27 +170,33 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.1" data-path="eda-2---time-series.html"><a href="eda-2---time-series.html#coercing-time-variables-to-dates"><i class="fa fa-check"></i><b>2.1</b> Coercing time variables to dates</a></li>
 <li class="chapter" data-level="2.2" data-path="eda-2---time-series.html"><a href="eda-2---time-series.html#assignment-2"><i class="fa fa-check"></i><b>2.2</b> Assignment 2</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="other-topics.html"><a href="other-topics.html"><i class="fa fa-check"></i><b>3</b> Other Topics</a>
+<li class="chapter" data-level="3" data-path="eda-3---spatial-data.html"><a href="eda-3---spatial-data.html"><i class="fa fa-check"></i><b>3</b> EDA 3 - Spatial Data</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="other-topics.html"><a href="other-topics.html#data-processing"><i class="fa fa-check"></i><b>3.1</b> Data Processing</a>
-<ul>
-<li class="chapter" data-level="3.1.1" data-path="other-topics.html"><a href="other-topics.html#cleaning-up-strings"><i class="fa fa-check"></i><b>3.1.1</b> Cleaning up strings</a></li>
-<li class="chapter" data-level="3.1.2" data-path="other-topics.html"><a href="other-topics.html#assignment-1-1"><i class="fa fa-check"></i><b>3.1.2</b> Assignment 1</a></li>
+<li class="chapter" data-level="3.1" data-path="eda-3---spatial-data.html"><a href="eda-3---spatial-data.html#joins-and-sf-objects"><i class="fa fa-check"></i><b>3.1</b> Joins and sf objects</a></li>
+<li class="chapter" data-level="3.2" data-path="eda-3---spatial-data.html"><a href="eda-3---spatial-data.html#plotting-spatial-data"><i class="fa fa-check"></i><b>3.2</b> Plotting spatial data</a></li>
+<li class="chapter" data-level="3.3" data-path="eda-3---spatial-data.html"><a href="eda-3---spatial-data.html#assignment-3"><i class="fa fa-check"></i><b>3.3</b> Assignment 3</a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="other-topics.html"><a href="other-topics.html#data-manipulation"><i class="fa fa-check"></i><b>3.2</b> Data Manipulation</a>
+<li class="chapter" data-level="4" data-path="other-topics.html"><a href="other-topics.html"><i class="fa fa-check"></i><b>4</b> Other Topics</a>
 <ul>
-<li class="chapter" data-level="3.2.1" data-path="other-topics.html"><a href="other-topics.html#filter"><i class="fa fa-check"></i><b>3.2.1</b> Filter</a></li>
-<li class="chapter" data-level="3.2.2" data-path="other-topics.html"><a href="other-topics.html#arrange"><i class="fa fa-check"></i><b>3.2.2</b> Arrange</a></li>
-<li class="chapter" data-level="3.2.3" data-path="other-topics.html"><a href="other-topics.html#select"><i class="fa fa-check"></i><b>3.2.3</b> Select</a></li>
-<li class="chapter" data-level="3.2.4" data-path="other-topics.html"><a href="other-topics.html#mutate"><i class="fa fa-check"></i><b>3.2.4</b> Mutate</a></li>
-<li class="chapter" data-level="3.2.5" data-path="other-topics.html"><a href="other-topics.html#group-by-summarise"><i class="fa fa-check"></i><b>3.2.5</b> Group-By/ Summarise</a></li>
-<li class="chapter" data-level="3.2.6" data-path="other-topics.html"><a href="other-topics.html#assignment-2-1"><i class="fa fa-check"></i><b>3.2.6</b> Assignment 2</a></li>
+<li class="chapter" data-level="4.1" data-path="other-topics.html"><a href="other-topics.html#data-processing"><i class="fa fa-check"></i><b>4.1</b> Data Processing</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="other-topics.html"><a href="other-topics.html#cleaning-up-strings"><i class="fa fa-check"></i><b>4.1.1</b> Cleaning up strings</a></li>
+<li class="chapter" data-level="4.1.2" data-path="other-topics.html"><a href="other-topics.html#assignment-1-1"><i class="fa fa-check"></i><b>4.1.2</b> Assignment 1</a></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path="other-topics.html"><a href="other-topics.html#time-series"><i class="fa fa-check"></i><b>3.3</b> Time Series</a>
+<li class="chapter" data-level="4.2" data-path="other-topics.html"><a href="other-topics.html#data-manipulation"><i class="fa fa-check"></i><b>4.2</b> Data Manipulation</a>
 <ul>
-<li class="chapter" data-level="3.3.1" data-path="other-topics.html"><a href="other-topics.html#decomposition"><i class="fa fa-check"></i><b>3.3.1</b> Decomposition</a></li>
-<li class="chapter" data-level="3.3.2" data-path="other-topics.html"><a href="other-topics.html#forecasting"><i class="fa fa-check"></i><b>3.3.2</b> Forecasting</a></li>
-<li class="chapter" data-level="3.3.3" data-path="other-topics.html"><a href="other-topics.html#statistical-model"><i class="fa fa-check"></i><b>3.3.3</b> Statistical model</a></li>
+<li class="chapter" data-level="4.2.1" data-path="other-topics.html"><a href="other-topics.html#filter"><i class="fa fa-check"></i><b>4.2.1</b> Filter</a></li>
+<li class="chapter" data-level="4.2.2" data-path="other-topics.html"><a href="other-topics.html#arrange"><i class="fa fa-check"></i><b>4.2.2</b> Arrange</a></li>
+<li class="chapter" data-level="4.2.3" data-path="other-topics.html"><a href="other-topics.html#select"><i class="fa fa-check"></i><b>4.2.3</b> Select</a></li>
+<li class="chapter" data-level="4.2.4" data-path="other-topics.html"><a href="other-topics.html#mutate"><i class="fa fa-check"></i><b>4.2.4</b> Mutate</a></li>
+<li class="chapter" data-level="4.2.5" data-path="other-topics.html"><a href="other-topics.html#group-by-summarise"><i class="fa fa-check"></i><b>4.2.5</b> Group-By/ Summarise</a></li>
+<li class="chapter" data-level="4.2.6" data-path="other-topics.html"><a href="other-topics.html#assignment-2-1"><i class="fa fa-check"></i><b>4.2.6</b> Assignment 2</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="other-topics.html"><a href="other-topics.html#time-series"><i class="fa fa-check"></i><b>4.3</b> Time Series</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="other-topics.html"><a href="other-topics.html#decomposition"><i class="fa fa-check"></i><b>4.3.1</b> Decomposition</a></li>
+<li class="chapter" data-level="4.3.2" data-path="other-topics.html"><a href="other-topics.html#forecasting"><i class="fa fa-check"></i><b>4.3.2</b> Forecasting</a></li>
+<li class="chapter" data-level="4.3.3" data-path="other-topics.html"><a href="other-topics.html#statistical-model"><i class="fa fa-check"></i><b>4.3.3</b> Statistical model</a></li>
 </ul></li>
 </ul></li>
 </ul>

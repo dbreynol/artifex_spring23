@@ -6,6 +6,7 @@ rmd_files: [
   "index.Rmd",
   "eda.Rmd",
   "eda_ts.Rmd",
+  "eda_space.Rmd",
   "write.Rmd"]
 delete_merged_file: true 
 output_dir: "docs"

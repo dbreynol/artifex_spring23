@@ -1,4 +1,4 @@
-tab:unnamed-chunk-17
+tab:unnamed-chunk-20
 eda-1-traditional-dfs
 from-base-r-to-ggplot2
 linear-regression
@@ -6,6 +6,10 @@ assignment-1
 eda-2---time-series
 coercing-time-variables-to-dates
 assignment-2
+eda-3---spatial-data
+joins-and-sf-objects
+plotting-spatial-data
+assignment-3
 other-topics
 data-processing
 cleaning-up-strings

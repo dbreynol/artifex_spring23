@@ -20,6 +20,9 @@ library(lubridate)
 library(knitr)
 library(forecast)
 library(nycflights13)
+library(spData)
+library(sf)
+library(mapview)
 ```
 
 # Course Overview - Artifex Spring 2023 {-}

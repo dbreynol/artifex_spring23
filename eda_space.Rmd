@@ -1,0 +1,47 @@
+# EDA 3 - Spatial Data
+
+## Joins and sf objects
+
+Spatial data typically consists of 2 parts: a normal old data frame and a geometry for each observation. These two parts are often contained in separate data files. So, the first topic of this section will be joining together different sets of data. We will look at the spatial distribution of crime in the US by joining together data from the <code>USArrests</code> dataset with data from the <code>us_states</code> dataset, which is contained in the package <code>spData</code>.
+
+The object we will use to contain variable data as well as geographic data is an <code>sf</code> object, from a package with the same name. 
+
+```{r echo=TRUE}
+USArrests$name = rownames(USArrests) # add the state names as a variable
+joined_df = left_join(USArrests, us_states, by = c("name" = "NAME")) # join the arrests and states geo data
+joined_df_sf = st_as_sf(joined_df) # coerce to an sf object
+```
+
+Now, we have an <code>sf</code> object that we can use for plotting.
+
+## Plotting spatial data 
+
+To plot the number of murders by state, we can use ggplot with the geom function, <code>geom_sf</code>.
+
+```{r echo=TRUE}
+ggplot(joined_df_sf) + geom_sf(aes(fill = Assault))
+```
+
+Another useful 
+
+```{r}
+mapview(joined_df_sf["Murder"])
+```
+
+## Assignment 3
+
+To do this assignment, install the package <code>spData</code>, which contains the data you will use.
+
+1. Join the <code>worldbank_df</code> with the <code>world</code> sf. Take a look at what each data set contains and what is a good variable to join on. Using that variable, join the two using a <code>left_join</code>. 
+
+2. With your combined data set (an sf), visualize the population growth in African countries.
+
+3. With your combined data set (an sf), visualize the urban population as a proportion of total population of European countries.
+
+4. Is there are an association between life expectancy and population growth?
+
+
+
+
+
+
