@@ -24,7 +24,7 @@ ggplot(joined_df_sf) + geom_sf(aes(fill = Assault))
 
 Another useful 
 
-```{r}
+```{r echo=TRUE}
 mapview(joined_df_sf["Murder"])
 ```
 
