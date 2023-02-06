@@ -23,6 +23,7 @@ library(nycflights13)
 library(spData)
 library(sf)
 library(mapview)
+library(tidycensus)
 ```
 
 # Course Overview - Artifex Spring 2023 {-}

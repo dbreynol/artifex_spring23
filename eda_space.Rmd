@@ -41,7 +41,68 @@ To do this assignment, install the package <code>spData</code>, which contains t
 4. Is there are an association between life expectancy and population growth?
 
 
+## ACS Data
+
+We will look at American Community Survey (ACS) data to explore time and space concepts. What is the ACS:
+
+- Annual survey of 3.5 million US households
+- Covers topics not available in decennial US Census data (e.g. income, education, language, housing characteristics)
+- Available as 1-year estimates (for geographies of population 65,000 and greater) and 5-year estimates (for geographies down to the block group)
+- Data delivered as estimates characterized by margins of error
+
+We will use a package called tidycensus to explore ACS data. To use tidycensus, you will need a Census API key. Visit [this page](https://api.census.gov/data/key_signup.html) to request a key, then activate the key from the link in your email.
+
+Once activated, use the <code>census_api_key()</code> function to set your key as an environment variable.
+
+```{r echo=TRUE, eval=FALSE}
+library(tidycensus)
+census_api_key("YOUR KEY GOES HERE", install = TRUE)
+```
+
+By default, ACS data are returned by <code>get_acs()</code> with the following five columns:
+
+<code>GEOID</code>: unique identifier for the Census geographic unit
+
+<code>NAME</code>: A descriptive name for the geographic unit (e.g. a state name)
+
+variable: the ACS variable ID
+
+<code>estimate</code>: The ACS estimate. Estimates are interpretated as characteristics rather than true counts.
+
+<code>moe</code>: The margin of error associated with the estimate at a 90 percent confidence level.
+
+Using the argument <code>geometry = T</code> will include a multipolygon for each row.
+
+```{r echo=TRUE, warning=FALSE, results = 'hide'}
+median_age = get_acs(
+  geography = "state",
+  variables = "B01002_001",
+  year = 2021,
+  survey = "acs1",
+  geometry = T
+)
+```
+
+Different geographies 
+
+```{r echo=TRUE, warning=FALSE, results = 'hide'}
+strafford_median_age <- get_acs(
+  geography = "tract",
+  variables = "B01002_001",
+  state = "NH",
+  county = "Strafford",
+  year = 2021
+)
+```
 
 
-
+```{r echo=TRUE, warning=FALSE, results = 'hide'}
+median_home_value <- get_acs(
+  geography = "county",
+  variables = "B25077_001",
+  survey = "acs1",
+  year = 2019,
+  geometry = T
+)
+```
 
