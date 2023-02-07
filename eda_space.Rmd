@@ -110,3 +110,7 @@ median_home_value <- get_acs(
 )
 ```
 
+## Assignment 4
+
+Choose a variable in the ACS1 survey that you think is interesting. See how it changes from 2005 - 2021 (by year)? Did the change(s) depend on geography? Make the best possible visualization you can for this.
+
