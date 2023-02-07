@@ -50,7 +50,7 @@ We will look at American Community Survey (ACS) data to explore time and space c
 - Available as 1-year estimates (for geographies of population 65,000 and greater) and 5-year estimates (for geographies down to the block group)
 - Data delivered as estimates characterized by margins of error
 
-We will use a package called tidycensus to explore ACS data. To use tidycensus, you will need a Census API key. Visit [this page](https://api.census.gov/data/key_signup.html) to request a key, then activate the key from the link in your email.
+We will use a package called <code>tidycensus</code> to explore ACS data. To use tidycensus, you will need a Census API key. Visit [this page](https://api.census.gov/data/key_signup.html) to request a key, then activate the key from the link in your email.
 
 Once activated, use the <code>census_api_key()</code> function to set your key as an environment variable.
 
@@ -71,9 +71,11 @@ variable: the ACS variable ID
 
 <code>moe</code>: The margin of error associated with the estimate at a 90 percent confidence level.
 
-Using the argument <code>geometry = T</code> will include a multipolygon for each row.
+Using the argument <code>geometry = T</code> will include a multipolygon for each row. This way, the data is an <code>sf</code> object on which you can use the plotting tools above. Here are some examples
 
-```{r echo=TRUE, warning=FALSE, results = 'hide'}
+### Median age by state
+
+```{r echo=TRUE, warning=FALSE, results = 'hide', eval=FALSE}
 median_age = get_acs(
   geography = "state",
   variables = "B01002_001",
@@ -83,20 +85,22 @@ median_age = get_acs(
 )
 ```
 
-Different geographies 
+### Median age within Strafford County
 
-```{r echo=TRUE, warning=FALSE, results = 'hide'}
+```{r echo=TRUE, warning=FALSE, results = 'hide', eval=FALSE}
 strafford_median_age <- get_acs(
   geography = "tract",
   variables = "B01002_001",
   state = "NH",
   county = "Strafford",
-  year = 2021
+  year = 2021,
+  geometry = T
 )
 ```
 
+### Median home value by county
 
-```{r echo=TRUE, warning=FALSE, results = 'hide'}
+```{r echo=TRUE, warning=FALSE, results = 'hide', eval=FALSE}
 median_home_value <- get_acs(
   geography = "county",
   variables = "B25077_001",
