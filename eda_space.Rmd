@@ -2,7 +2,7 @@
 
 ## Joins and sf objects
 
-Spatial data typically consists of 2 parts: a normal old data frame and a geometry for each observation. These two parts are often contained in separate data files. So, the first topic of this section will be joining together different sets of data. We will look at the spatial distribution of crime in the US by joining together data from the <code>USArrests</code> dataset with data from the <code>us_states</code> dataset, which is contained in the package <code>spData</code>.
+Spatial data typically consists of 2 parts: a normal old data frame and a geometry for each observation. These two parts are often contained in separate data files. So, the first topic of this section will be joining together different sets of data. We will look at the spatial distribution of crime in the US by joisning together data from the <code>USArrests</code> dataset with data from the <code>us_states</code> dataset, which is contained in the package <code>spData</code>.
 
 The object we will use to contain variable data as well as geographic data is an <code>sf</code> object, from a package with the same name. 
 

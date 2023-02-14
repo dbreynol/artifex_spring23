@@ -24,6 +24,7 @@ library(spData)
 library(sf)
 library(mapview)
 library(tidycensus)
+library(quantmod)
 ```
 
 # Course Overview - Artifex Spring 2023 {-}

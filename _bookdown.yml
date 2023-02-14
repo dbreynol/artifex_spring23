@@ -7,6 +7,7 @@ rmd_files: [
   "eda.Rmd",
   "eda_ts.Rmd",
   "eda_space.Rmd",
+  "statistical_analysis.Rmd",
   "write.Rmd"]
 delete_merged_file: true 
 output_dir: "docs"
