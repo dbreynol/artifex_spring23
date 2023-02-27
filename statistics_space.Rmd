@@ -1,0 +1,65 @@
+## Spatial Data
+
+### Polygon data - ACS
+
+Autocorrelation (whether spatial or not) is a measure of similarity (correlation) between nearby observations. In the context of time series, autocorrelation measures the similarity of observations that are nearby in time. The concept of spatial autocorrelation is an extension of this. However, there are some complications. In time, there is only a single dimension to consider when considering the distance between observations. For spatial data, there are many possible ways in which observations may be *nearby* other observations. One way to measure spatial autocorrelation is a statistic called Moran's I. To illustrate, I will use ACS data on median home values for counties in New Hampshire. Let us first obtain and visualize this data.
+
+```{r message=FALSE, warning=FALSE, eval = F, echo=TRUE}
+home_value <- get_acs(
+  geography = "county",
+  state = "NH",
+  variables = "B25077_001", # median home value
+  survey = "acs1",
+  year = 2019,
+  geometry = T
+)
+```
+
+
+```{r warning=FALSE}
+home_value = readRDS("home_value.RDS")
+home_value$county = unlist ( lapply ( str_split(home_value$NAME, " "), function(x) { x[1]} ) )
+
+ggplot(home_value) + geom_sf(aes(fill = estimate)) + 
+  geom_sf_text(aes(label = county), color = "white")
+
+kable(data.frame(county = home_value$county, num = 1:6))
+
+```
+
+The table above shows the mapping of counties to integers. The next step to take is to get a list of neighbors for each county. This is achieved with the function <code>poly2nb</code> (from the package <code>spdep</code> ). As an example, the neighbors of the first county are,
+
+```{r echo=TRUE}
+nb <- poly2nb(home_value, queen=F)
+nb[[1]] # neighbors of county 1
+```
+
+Next, we need to take these neighbors and give them weights (using the <code>nb2listw</code> function), then use these weights to compute the weighted average of neighbors for each country (using the <code>lag.listw</code> function). See example below,
+
+```{r echo=TRUE}
+lw <- nb2listw(nb, style="W")
+inc.lag <- lag.listw(lw, home_value$estimate)
+```
+
+```{r echo=TRUE}
+moransi.df = data.frame(neighbors = inc.lag, observations = home_value$estimate)
+
+ggplot(moransi.df, aes(x= observations, y = neighbors)) + 
+  geom_point() + 
+  geom_smooth(formula = y ~ x, method = "lm") + 
+  ggtitle("Morans I plot")
+
+```
+
+The Moran's I is the slope of this regression line. In this case, -0.06. This can also be computed as,
+
+```{r echo=TRUE}
+lm(neighbors ~ observations, data = moransi.df) %>% 
+  tidy() %>% 
+  kable()
+```
+
+### Point data
+
+
+

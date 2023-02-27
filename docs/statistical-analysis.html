@@ -23,7 +23,7 @@
 <meta name="author" content="David Reynolds" />
 
 
-<meta name="date" content="2023-02-14" />
+<meta name="date" content="2023-02-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -187,6 +187,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="4.1" data-path="statistical-analysis.html"><a href="statistical-analysis.html#time-series"><i class="fa fa-check"></i><b>4.1</b> Time series</a></li>
 <li class="chapter" data-level="4.2" data-path="statistical-analysis.html"><a href="statistical-analysis.html#exercise"><i class="fa fa-check"></i><b>4.2</b> Exercise</a></li>
+<li class="chapter" data-level="4.3" data-path="statistical-analysis.html"><a href="statistical-analysis.html#spatial-data"><i class="fa fa-check"></i><b>4.3</b> Spatial Data</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="statistical-analysis.html"><a href="statistical-analysis.html#polygon-data---acs"><i class="fa fa-check"></i><b>4.3.1</b> Polygon data - ACS</a></li>
+<li class="chapter" data-level="4.3.2" data-path="statistical-analysis.html"><a href="statistical-analysis.html#point-data"><i class="fa fa-check"></i><b>4.3.2</b> Point data</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="other-topics.html"><a href="other-topics.html"><i class="fa fa-check"></i><b>5</b> Other Topics</a>
 <ul>
@@ -257,7 +262,7 @@ r_k = \frac{ \sum_{t = k + 1}^{T} (y_t - \bar{y})(y_{t-k} - \bar{y}) }{\sum_{t=1
 <span id="cb24-6"><a href="statistical-analysis.html#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co"># lag 1 autocorrelation</span></span>
 <span id="cb24-7"><a href="statistical-analysis.html#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>( (a1 <span class="sc">-</span> <span class="fu">mean</span>(a)) <span class="sc">*</span> (a2 <span class="sc">-</span> <span class="fu">mean</span>(a))) <span class="sc">/</span> (<span class="fu">sum</span>( (a <span class="sc">-</span> <span class="fu">mean</span>(a))<span class="sc">^</span><span class="dv">2</span> ) )  <span class="co"># by hand</span></span>
 <span id="cb24-8"><a href="statistical-analysis.html#cb24-8" aria-hidden="true" tabindex="-1"></a>(<span class="fu">acf</span>(a))</span></code></pre></div>
-<p>This statistic can be found using the <code>acf</code> function. Let’s use the <code>quandl</code> package to look at the acf of Google’s stock.</p>
+<p>This statistic can be found using the <code>acf</code> function. Let’s use the <code>quantmod</code> package to look at the acf of Google’s stock.</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="statistical-analysis.html#cb25-1" aria-hidden="true" tabindex="-1"></a>goog <span class="ot">=</span> <span class="fu">getSymbols</span>(<span class="st">&#39;GOOG&#39;</span>, <span class="at">from=</span><span class="st">&#39;2020-10-07&#39;</span>, <span class="at">to=</span><span class="st">&#39;2023-02-10&#39;</span>,<span class="at">auto.assign =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb25-2"><a href="statistical-analysis.html#cb25-2" aria-hidden="true" tabindex="-1"></a>goog<span class="sc">$</span>diff <span class="ot">=</span> <span class="fu">diff</span>(goog<span class="sc">$</span>GOOG.Close)</span>
 <span id="cb25-3"><a href="statistical-analysis.html#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(goog<span class="sc">$</span>diff)</span></code></pre></div>
@@ -270,6 +275,105 @@ r_k = \frac{ \sum_{t = k + 1}^{T} (y_t - \bar{y})(y_{t-k} - \bar{y}) }{\sum_{t=1
 <p>If your team’s data has a time component(s), explore the ACF of all time series variables as well as their differenced values. What does this tell you?</p>
 <p>If your team doesn’t have time indexed data, find a different security from quandl and explore its ACF. How would you explain this? Also, look at the differenced value of the security’s close price and its ACF. Compute the lag 10 autocorrelation “by hand” and check using <code>acf</code></p>
 
+</div>
+<div id="spatial-data" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> Spatial Data<a href="statistical-analysis.html#spatial-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="polygon-data---acs" class="section level3 hasAnchor" number="4.3.1">
+<h3><span class="header-section-number">4.3.1</span> Polygon data - ACS<a href="statistical-analysis.html#polygon-data---acs" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Autocorrelation (whether spatial or not) is a measure of similarity (correlation) between nearby observations. In the context of time series, autocorrelation measures the similarity of observations that are nearby in time. The concept of spatial autocorrelation is an extension of this. However, there are some complications. In time, there is only a single dimension to consider when considering the distance between observations. For spatial data, there are many possible ways in which observations may be <em>nearby</em> other observations. One way to measure spatial autocorrelation is a statistic called Moran’s I. To illustrate, I will use ACS data on median home values for counties in New Hampshire. Let us first obtain and visualize this data.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="statistical-analysis.html#cb27-1" aria-hidden="true" tabindex="-1"></a>home_value <span class="ot">&lt;-</span> <span class="fu">get_acs</span>(</span>
+<span id="cb27-2"><a href="statistical-analysis.html#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">geography =</span> <span class="st">&quot;county&quot;</span>,</span>
+<span id="cb27-3"><a href="statistical-analysis.html#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">state =</span> <span class="st">&quot;NH&quot;</span>,</span>
+<span id="cb27-4"><a href="statistical-analysis.html#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">variables =</span> <span class="st">&quot;B25077_001&quot;</span>, <span class="co"># median home value</span></span>
+<span id="cb27-5"><a href="statistical-analysis.html#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">survey =</span> <span class="st">&quot;acs1&quot;</span>,</span>
+<span id="cb27-6"><a href="statistical-analysis.html#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">year =</span> <span class="dv">2019</span>,</span>
+<span id="cb27-7"><a href="statistical-analysis.html#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">geometry =</span> T</span>
+<span id="cb27-8"><a href="statistical-analysis.html#cb27-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p><img src="series_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">county</th>
+<th align="right">num</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Strafford</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Rockingham</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Grafton</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Hillsborough</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">Cheshire</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">Merrimack</td>
+<td align="right">6</td>
+</tr>
+</tbody>
+</table>
+<p>The table above shows the mapping of counties to integers. The next step to take is to get a list of neighbors for each county. This is achieved with the function <code>poly2nb</code> (from the package <code>spdep</code> ). As an example, the neighbors of the first county are,</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="statistical-analysis.html#cb28-1" aria-hidden="true" tabindex="-1"></a>nb <span class="ot">&lt;-</span> <span class="fu">poly2nb</span>(home_value, <span class="at">queen=</span>F)</span>
+<span id="cb28-2"><a href="statistical-analysis.html#cb28-2" aria-hidden="true" tabindex="-1"></a>nb[[<span class="dv">1</span>]] <span class="co"># neighbors of county 1</span></span></code></pre></div>
+<pre><code>## [1] 2 6</code></pre>
+<p>Next, we need to take these neighbors and give them weights (using the <code>nb2listw</code> function), then use these weights to compute the weighted average of neighbors for each country (using the <code>lag.listw</code> function). See example below,</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="statistical-analysis.html#cb30-1" aria-hidden="true" tabindex="-1"></a>lw <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(nb, <span class="at">style=</span><span class="st">&quot;W&quot;</span>)</span>
+<span id="cb30-2"><a href="statistical-analysis.html#cb30-2" aria-hidden="true" tabindex="-1"></a>inc.lag <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(lw, home_value<span class="sc">$</span>estimate)</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="statistical-analysis.html#cb31-1" aria-hidden="true" tabindex="-1"></a>moransi.df <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">neighbors =</span> inc.lag, <span class="at">observations =</span> home_value<span class="sc">$</span>estimate)</span>
+<span id="cb31-2"><a href="statistical-analysis.html#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="statistical-analysis.html#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(moransi.df, <span class="fu">aes</span>(<span class="at">x=</span> observations, <span class="at">y =</span> neighbors)) <span class="sc">+</span> </span>
+<span id="cb31-4"><a href="statistical-analysis.html#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb31-5"><a href="statistical-analysis.html#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">formula =</span> y <span class="sc">~</span> x, <span class="at">method =</span> <span class="st">&quot;lm&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb31-6"><a href="statistical-analysis.html#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Morans I plot&quot;</span>)</span></code></pre></div>
+<p><img src="series_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<p>The Moran’s I is the slope of this regression line. In this case, -0.06. This can also be computed as,</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="statistical-analysis.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(neighbors <span class="sc">~</span> observations, <span class="at">data =</span> moransi.df) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-2"><a href="statistical-analysis.html#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb32-3"><a href="statistical-analysis.html#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">2.957523e+05</td>
+<td align="right">4.543672e+04</td>
+<td align="right">6.5091039</td>
+<td align="right">0.0028750</td>
+</tr>
+<tr class="even">
+<td align="left">observations</td>
+<td align="right">-6.096390e-02</td>
+<td align="right">1.680815e-01</td>
+<td align="right">-0.3627043</td>
+<td align="right">0.7351786</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="point-data" class="section level3 hasAnchor" number="4.3.2">
+<h3><span class="header-section-number">4.3.2</span> Point data<a href="statistical-analysis.html#point-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+
+</div>
 </div>
 </div>
             </section>

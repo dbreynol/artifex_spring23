@@ -39,7 +39,7 @@ sum( (a1 - mean(a)) * (a2 - mean(a))) / (sum( (a - mean(a))^2 ) )  # by hand
 (acf(a))
 ```
 
-This statistic can be found using the <code>acf</code> function. Let's use the <code>quandl</code> package to look at the acf of Google's stock. 
+This statistic can be found using the <code>acf</code> function. Let's use the <code>quantmod</code> package to look at the acf of Google's stock. 
 
 ```{r echo=TRUE}
 goog = getSymbols('GOOG', from='2020-10-07', to='2023-02-10',auto.assign = FALSE)
