@@ -1,4 +1,4 @@
-tab:unnamed-chunk-33
+tab:unnamed-chunk-35
 eda-1-traditional-dfs
 from-base-r-to-ggplot2
 linear-regression
@@ -19,8 +19,6 @@ statistical-analysis
 time-series
 exercise
 spatial-data
-polygon-data---acs
-point-data
 other-topics
 data-processing
 cleaning-up-strings

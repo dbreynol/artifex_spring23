@@ -23,7 +23,7 @@
 <meta name="author" content="David Reynolds" />
 
 
-<meta name="date" content="2023-02-27" />
+<meta name="date" content="2023-02-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -187,11 +187,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="4.1" data-path="statistical-analysis.html"><a href="statistical-analysis.html#time-series"><i class="fa fa-check"></i><b>4.1</b> Time series</a></li>
 <li class="chapter" data-level="4.2" data-path="statistical-analysis.html"><a href="statistical-analysis.html#exercise"><i class="fa fa-check"></i><b>4.2</b> Exercise</a></li>
-<li class="chapter" data-level="4.3" data-path="statistical-analysis.html"><a href="statistical-analysis.html#spatial-data"><i class="fa fa-check"></i><b>4.3</b> Spatial Data</a>
-<ul>
-<li class="chapter" data-level="4.3.1" data-path="statistical-analysis.html"><a href="statistical-analysis.html#polygon-data---acs"><i class="fa fa-check"></i><b>4.3.1</b> Polygon data - ACS</a></li>
-<li class="chapter" data-level="4.3.2" data-path="statistical-analysis.html"><a href="statistical-analysis.html#point-data"><i class="fa fa-check"></i><b>4.3.2</b> Point data</a></li>
-</ul></li>
+<li class="chapter" data-level="4.3" data-path="statistical-analysis.html"><a href="statistical-analysis.html#spatial-data"><i class="fa fa-check"></i><b>4.3</b> Spatial Data</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="other-topics.html"><a href="other-topics.html"><i class="fa fa-check"></i><b>5</b> Other Topics</a>
 <ul>
@@ -278,9 +274,13 @@ r_k = \frac{ \sum_{t = k + 1}^{T} (y_t - \bar{y})(y_{t-k} - \bar{y}) }{\sum_{t=1
 </div>
 <div id="spatial-data" class="section level2 hasAnchor" number="4.3">
 <h2><span class="header-section-number">4.3</span> Spatial Data<a href="statistical-analysis.html#spatial-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div id="polygon-data---acs" class="section level3 hasAnchor" number="4.3.1">
-<h3><span class="header-section-number">4.3.1</span> Polygon data - ACS<a href="statistical-analysis.html#polygon-data---acs" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Autocorrelation (whether spatial or not) is a measure of similarity (correlation) between nearby observations. In the context of time series, autocorrelation measures the similarity of observations that are nearby in time. The concept of spatial autocorrelation is an extension of this. However, there are some complications. In time, there is only a single dimension to consider when considering the distance between observations. For spatial data, there are many possible ways in which observations may be <em>nearby</em> other observations. One way to measure spatial autocorrelation is a statistic called Moran’s I. To illustrate, I will use ACS data on median home values for counties in New Hampshire. Let us first obtain and visualize this data.</p>
+<p>Autocorrelation (whether spatial or not) is a measure of similarity (correlation) between nearby observations. In the context of time series, autocorrelation measures the similarity of observations that are nearby in time. The concept of spatial autocorrelation is an extension of this. However, there are some complications. In time, there is only a single dimension to consider when quantifying the distance between observations. For spatial data, there are many possible ways in which observations may be <em>nearby</em> other observations. One way to measure spatial autocorrelation is a statistic called Moran’s I. <strong>This statistic quantifies the relationship between a variable and its neighbors’ weighted average.</strong> Key steps to compute this statistic are:</p>
+<ol style="list-style-type: decimal">
+<li>Get the set of neighbors for each polygon (<code>poly2nb</code>)</li>
+<li>Assign weights to each neighbor (<code>nb2listw</code>), compute a weighted mean (<code>lag.listw</code>)</li>
+<li>Quantify the linear relationship (<code>lm</code>)</li>
+</ol>
+<p>To illustrate, I will use ACS data on median home values for counties in New Hampshire. Let us first obtain and visualize this data.</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="statistical-analysis.html#cb27-1" aria-hidden="true" tabindex="-1"></a>home_value <span class="ot">&lt;-</span> <span class="fu">get_acs</span>(</span>
 <span id="cb27-2"><a href="statistical-analysis.html#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">geography =</span> <span class="st">&quot;county&quot;</span>,</span>
 <span id="cb27-3"><a href="statistical-analysis.html#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">state =</span> <span class="st">&quot;NH&quot;</span>,</span>
@@ -369,11 +369,14 @@ r_k = \frac{ \sum_{t = k + 1}^{T} (y_t - \bar{y})(y_{t-k} - \bar{y}) }{\sum_{t=1
 </tr>
 </tbody>
 </table>
-</div>
-<div id="point-data" class="section level3 hasAnchor" number="4.3.2">
-<h3><span class="header-section-number">4.3.2</span> Point data<a href="statistical-analysis.html#point-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>This relationship is not significant. However, if we looked at all counties in the US, we would see a significant spatial relationship.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="statistical-analysis.html#cb33-1" aria-hidden="true" tabindex="-1"></a>home_value2 <span class="ot">=</span> <span class="fu">readRDS</span>(<span class="st">&quot;home_value2.RDS&quot;</span>) <span class="co"># all counties data</span></span>
+<span id="cb33-2"><a href="statistical-analysis.html#cb33-2" aria-hidden="true" tabindex="-1"></a>nb <span class="ot">=</span> <span class="fu">poly2nb</span>(home_value2) <span class="co"># neighbors list</span></span>
+<span id="cb33-3"><a href="statistical-analysis.html#cb33-3" aria-hidden="true" tabindex="-1"></a>wts <span class="ot">=</span> <span class="fu">nb2listw</span>(nb, <span class="at">zero.policy =</span> <span class="cn">TRUE</span>) <span class="co"># weights</span></span>
+<span id="cb33-4"><a href="statistical-analysis.html#cb33-4" aria-hidden="true" tabindex="-1"></a>nbs <span class="ot">=</span> <span class="fu">lag.listw</span>(wts, home_value2<span class="sc">$</span>estimate) <span class="co"># weighted average for each county</span></span>
+<span id="cb33-5"><a href="statistical-analysis.html#cb33-5" aria-hidden="true" tabindex="-1"></a>df <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">neighbors =</span> nbs, <span class="at">obs =</span> home_value2<span class="sc">$</span>estimate) <span class="sc">%&gt;%</span> <span class="fu">na.omit</span>() <span class="co"># pack it up into a data frame</span></span></code></pre></div>
+<p><img src="series_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
 
-</div>
 </div>
 </div>
             </section>

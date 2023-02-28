@@ -1,8 +1,13 @@
-## Spatial Data
+## Spatial Data 
 
-### Polygon data - ACS
+Autocorrelation (whether spatial or not) is a measure of similarity (correlation) between nearby observations. In the context of time series, autocorrelation measures the similarity of observations that are nearby in time. The concept of spatial autocorrelation is an extension of this. However, there are some complications. In time, there is only a single dimension to consider when quantifying the distance between observations. For spatial data, there are many possible ways in which observations may be *nearby* other observations. One way to measure spatial autocorrelation is a statistic called Moran's I. **This statistic quantifies the relationship between a variable and its neighbors' weighted average.** Key steps to compute this statistic are:
 
-Autocorrelation (whether spatial or not) is a measure of similarity (correlation) between nearby observations. In the context of time series, autocorrelation measures the similarity of observations that are nearby in time. The concept of spatial autocorrelation is an extension of this. However, there are some complications. In time, there is only a single dimension to consider when considering the distance between observations. For spatial data, there are many possible ways in which observations may be *nearby* other observations. One way to measure spatial autocorrelation is a statistic called Moran's I. To illustrate, I will use ACS data on median home values for counties in New Hampshire. Let us first obtain and visualize this data.
+1. Get the set of neighbors for each polygon (<code>poly2nb</code>)
+2. Assign weights to each neighbor (<code>nb2listw</code>), compute a weighted mean (<code>lag.listw</code>)
+3. Quantify the linear relationship (<code>lm</code>)
+
+To illustrate, I will use ACS data on median home values for counties in New Hampshire. Let us first obtain and visualize this data.
+
 
 ```{r message=FALSE, warning=FALSE, eval = F, echo=TRUE}
 home_value <- get_acs(
@@ -59,7 +64,22 @@ lm(neighbors ~ observations, data = moransi.df) %>%
   kable()
 ```
 
-### Point data
+This relationship is not significant. However, if we looked at all counties in the US, we would see a significant spatial relationship. 
 
 
+```{r echo = T, warning=F}
+home_value2 = readRDS("home_value2.RDS") # all counties data
+nb = poly2nb(home_value2) # neighbors list
+wts = nb2listw(nb, zero.policy = TRUE) # weights
+nbs = lag.listw(wts, home_value2$estimate) # weighted average for each county
+df = data.frame(neighbors = nbs, obs = home_value2$estimate) %>% na.omit() # pack it up into a data frame
+```
+
+```{r}
+ggplot(df, aes(x = obs, y = neighbors)) + 
+  geom_point(alpha = 0.5) + 
+  geom_smooth(formula = y ~ x, method = "lm") + 
+  theme_minimal() + 
+  ggtitle("Relationship for all counties in the US")
+```
 
