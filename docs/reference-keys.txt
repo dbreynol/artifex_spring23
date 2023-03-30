@@ -1,4 +1,4 @@
-tab:unnamed-chunk-35
+tab:unnamed-chunk-38
 eda-1-traditional-dfs
 from-base-r-to-ggplot2
 linear-regression
@@ -19,6 +19,9 @@ statistical-analysis
 time-series
 exercise
 spatial-data
+team-help
+zillow
+question-is-there-any-spatial-pattern-to-the-log-error
 other-topics
 data-processing
 cleaning-up-strings

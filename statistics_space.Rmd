@@ -12,9 +12,9 @@ To illustrate, I will use ACS data on median home values for counties in New Ham
 ```{r message=FALSE, warning=FALSE, eval = F, echo=TRUE}
 home_value <- get_acs(
   geography = "county",
-  state = "NH",
+  #state = "NH",
   variables = "B25077_001", # median home value
-  survey = "acs1",
+  survey = "acs5",
   year = 2019,
   geometry = T
 )

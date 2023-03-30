@@ -1,0 +1,55 @@
+# Team Help
+
+## Zillow
+
+### Question: is there any spatial pattern to the log error?
+
+To answer this, let's look at the median log error by census tract and then plot it. To get CA census tract info, you can use the tidycensus package and the code below.
+
+
+```{r echo=FALSE}
+ca_data = readRDS("data/ca_data.RDS")
+ca_data = st_as_sf(ca_data)
+l_error = readRDS("data/l_error.RDS")
+```
+
+```{r echo=TRUE, eval=FALSE}
+ca_data = get_acs(geography = "tract", 
+        variables = c(medincome = "B19013_001"), 
+        state = "CA", 
+        geometry = T,
+        year = 2016)
+```
+
+The other data file I am using is a data frame called l_error, which is a left join of the 2016 training data on the 2016 properties data by parcelid. The strategy is to make this file into an sf object with latitude and longitude as the spatial feature. Then, join this to the census tract data, group by census tract and get the median logerror for each. Finally, use another join to get back the census tract spatial data and plot using mapview.
+
+
+```{r echo=TRUE}
+# make sf object from l_error
+l_error_sf = l_error %>% 
+  mutate(lat = latitude/1e6, lon = longitude/1e6) %>% 
+  st_as_sf(coords = c("lon", "lat"), crs = "NAD83") %>% 
+  dplyr::select(logerror) 
+
+# join this to ca census tract data to get the GEOID for each parcel
+
+error_by_tract = st_join(l_error_sf, ca_data) %>% 
+  group_by(GEOID) %>% 
+  summarise(error = median(logerror, na.rm = T)) # median error by census tract
+
+# now, join back to the ca data to get the tract geo data that we can plot
+
+b_df = as.data.frame(error_by_tract)
+ca_df = as.data.frame(ca_data)
+
+joined = left_join(b_df, ca_df, by = "GEOID") %>% select(error, geometry.y) %>% 
+  mutate(error_p = exp(error)) %>% 
+  mutate(zest_high = as.factor( ifelse(error_p > 1, 1, 0) ),
+                                          zes_low = as.factor( ifelse(error_p < 1, 1, 0)) )
+joined_sf = st_as_sf(joined) 
+
+mapview(joined_sf, zcol = "zes_low")
+
+
+```
+
