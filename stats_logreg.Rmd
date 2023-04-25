@@ -1,0 +1,33 @@
+## Logistic Regression
+
+Logistic regression is like linear regression, with the key difference that the response variable is binary. Let's start with a reminder on linear regression. Using <code>mtcars</code>, how would you fit a model of mpg as a function of wt? What is the fit model and what do the coefficients mean?
+
+Suppose instead we want a model to predict whether the car's transmission is automatic or manual based on the number of cylinders. In this case, the response variable is the probability that the car is manual. The fit model will give us an estimate of this probability. The code below fits this model and obtains predicted probabilities for each car.
+
+```{r echo=TRUE}
+
+m0 = glm(am ~ wt, mtcars, family = "binomial")
+probs_predicted = predict(m0, type = "response")
+# can also be obtained as below,
+# exp (12.040 - 4.024 * mtcars$wt) / ( 1 + exp (12.040 - 4.024 * mtcars$wt))
+```
+
+```{r echo=FALSE, eval=FALSE}
+mtcars %>% group_by(cyl) %>% summarise(p = sum(am)/n(), n = n(), ams = sum(am), mpgb = mean(mpg))
+ggplot(mtcars, aes( as.factor(am), mpg)) + geom_boxplot() + geom_point() + facet_wrap(~ cyl)
+# most of the manual have 4 cyl
+
+
+```
+
+
+### Logistic regression assigment
+
+1. **Team TJ's** show the fit model for your two logistic regressions
+2. **(W)NBA** Response: 1 if shot made/ 0 otherwise. Explanatory variables of your choice (shot type would be a good place to start)
+3. **Zillow** Response: 1 if the Zestimate is greater than the SalePrice and 0 otherwise.
+4. **Census** Response: 1 if the income growth is > median amount. State name as explanatory variable.
+
+
+
+

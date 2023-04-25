@@ -23,7 +23,7 @@
 <meta name="author" content="David Reynolds" />
 
 
-<meta name="date" content="2023-03-30" />
+<meta name="date" content="2023-04-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -188,6 +188,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.1" data-path="statistical-analysis.html"><a href="statistical-analysis.html#time-series"><i class="fa fa-check"></i><b>4.1</b> Time series</a></li>
 <li class="chapter" data-level="4.2" data-path="statistical-analysis.html"><a href="statistical-analysis.html#exercise"><i class="fa fa-check"></i><b>4.2</b> Exercise</a></li>
 <li class="chapter" data-level="4.3" data-path="statistical-analysis.html"><a href="statistical-analysis.html#spatial-data"><i class="fa fa-check"></i><b>4.3</b> Spatial Data</a></li>
+<li class="chapter" data-level="4.4" data-path="statistical-analysis.html"><a href="statistical-analysis.html#logistic-regression"><i class="fa fa-check"></i><b>4.4</b> Logistic Regression</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="statistical-analysis.html"><a href="statistical-analysis.html#logistic-regression-assigment"><i class="fa fa-check"></i><b>4.4.1</b> Logistic regression assigment</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="team-help.html"><a href="team-help.html"><i class="fa fa-check"></i><b>5</b> Team Help</a>
 <ul>
@@ -384,6 +388,25 @@ r_k = \frac{ \sum_{t = k + 1}^{T} (y_t - \bar{y})(y_{t-k} - \bar{y}) }{\sum_{t=1
 <span id="cb33-5"><a href="statistical-analysis.html#cb33-5" aria-hidden="true" tabindex="-1"></a>df <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">neighbors =</span> nbs, <span class="at">obs =</span> home_value2<span class="sc">$</span>estimate) <span class="sc">%&gt;%</span> <span class="fu">na.omit</span>() <span class="co"># pack it up into a data frame</span></span></code></pre></div>
 <p><img src="series_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
 
+</div>
+<div id="logistic-regression" class="section level2 hasAnchor" number="4.4">
+<h2><span class="header-section-number">4.4</span> Logistic Regression<a href="statistical-analysis.html#logistic-regression" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Logistic regression is like linear regression, with the key difference that the response variable is binary. Let’s start with a reminder on linear regression. Using <code>mtcars</code>, how would you fit a model of mpg as a function of wt? What is the fit model and what do the coefficients mean?</p>
+<p>Suppose instead we want a model to predict whether the car’s transmission is automatic or manual based on the number of cylinders. In this case, the response variable is the probability that the car is manual. The fit model will give us an estimate of this probability. The code below fits this model and obtains predicted probabilities for each car.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="statistical-analysis.html#cb34-1" aria-hidden="true" tabindex="-1"></a>m0 <span class="ot">=</span> <span class="fu">glm</span>(am <span class="sc">~</span> wt, mtcars, <span class="at">family =</span> <span class="st">&quot;binomial&quot;</span>)</span>
+<span id="cb34-2"><a href="statistical-analysis.html#cb34-2" aria-hidden="true" tabindex="-1"></a>probs_predicted <span class="ot">=</span> <span class="fu">predict</span>(m0, <span class="at">type =</span> <span class="st">&quot;response&quot;</span>)</span>
+<span id="cb34-3"><a href="statistical-analysis.html#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="co"># can also be obtained as below,</span></span>
+<span id="cb34-4"><a href="statistical-analysis.html#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="co"># exp (12.040 - 4.024 * mtcars$wt) / ( 1 + exp (12.040 - 4.024 * mtcars$wt))</span></span></code></pre></div>
+<div id="logistic-regression-assigment" class="section level3 hasAnchor" number="4.4.1">
+<h3><span class="header-section-number">4.4.1</span> Logistic regression assigment<a href="statistical-analysis.html#logistic-regression-assigment" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><strong>Team TJ’s</strong> show the fit model for your two logistic regressions</li>
+<li><strong>(W)NBA</strong> Response: 1 if shot made/ 0 otherwise. Explanatory variables of your choice (shot type would be a good place to start)</li>
+<li><strong>Zillow</strong> Response: 1 if the Zestimate is greater than the SalePrice and 0 otherwise.</li>
+<li><strong>Census</strong> Response: 1 if the income growth is &gt; median amount. State name as explanatory variable.</li>
+</ol>
+
+</div>
 </div>
 </div>
             </section>

@@ -9,6 +9,7 @@ rmd_files: [
   "eda_space.Rmd",
   "statistical_analysis.Rmd",
   "statistics_space.Rmd",
+  "stats_logreg.Rmd",
   "team_help.Rmd",
   "write.Rmd"]
 delete_merged_file: true 

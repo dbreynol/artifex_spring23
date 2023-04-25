@@ -15,7 +15,7 @@ l_error = readRDS("data/l_error.RDS")
 
 ```{r echo=TRUE, eval=FALSE}
 ca_data = get_acs(geography = "tract", 
-        variables = c(medincome = "B19013_001"), 
+        variables = c(pop = "P001001"), 
         state = "CA", 
         geometry = T,
         year = 2016)
